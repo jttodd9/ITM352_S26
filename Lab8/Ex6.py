@@ -12,7 +12,7 @@
 # 2) if x != 5: continue runs for almost every value, so x == 8 check is never reached.
 
 
-# DEBUGGED CODE (with notes of changes)
+
 # Change 1: Use range(1, 11) to loop from 1 to 10.
 # Change 2: Check x == 5 first, then continue to skip printing 5.
 # Change 3: Check x == 8 before printing so the loop stops at 8 and prints "done!".

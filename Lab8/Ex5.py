@@ -14,4 +14,3 @@ def fibonacci(values):
 my_list = [1, 2, 3, 4, 5]
 # Test call for the updated function.
 print(fibonacci(my_list)) 
-
