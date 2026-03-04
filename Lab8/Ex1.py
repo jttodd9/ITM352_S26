@@ -1,12 +1,11 @@
+n = 20  # change as needed
 
-# Debugged Version
-product = {
-    "name": 'small gumball', 
-    "price": 0.34  # Changed from string to float
-}
-
-tax_rate = 0.045
-
-total = product["price"] + product["price"] * tax_rate
-
-print(f"A {product['name']} costs ${total:.2f}")  # Accessed name using dictionary key and formatted total to 2 decimal places
+for i in range(1, n + 1):
+    if i % 3 == 0 and i % 5 == 0:
+        print("FizzBuzz")
+    elif i % 3 == 0:
+        print("Fizz")
+    elif i % 5 == 0:
+        print("Buzz")
+    else:
+        print(i)
