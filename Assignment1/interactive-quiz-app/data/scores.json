@@ -1,0 +1,18 @@
+{
+  "users": {
+    "Justin Todd": {
+      "high_score": 5,
+      "history": [
+        {
+          "score": 5,
+          "category": "history",
+          "date": "2026-03-07 15:15"
+        }
+      ]
+    }
+  },
+  "grand_champion": {
+    "name": "Justin Todd",
+    "score": 5
+  }
+}

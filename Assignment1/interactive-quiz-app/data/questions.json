@@ -21,6 +21,27 @@
                 "correct": ["c"],
                 "hint": "This civilization thrived along the Nile River.",
                 "explanation": "The ancient Egyptians built the pyramids of Giza around 2580-2560 BC as tombs for their pharaohs."
+            },
+            {
+                "question": "Which of the following were causes of World War I? (Select all that apply)",
+                "options": ["a) Assassination of Archduke Franz Ferdinand", "b) The Great Depression", "c) Rise of nationalism in Europe", "d) Alliance system among European powers"],
+                "correct": ["a", "c", "d"],
+                "hint": "The war started in 1914, well before the stock market crash.",
+                "explanation": "WWI was caused by a combination of the assassination of Archduke Franz Ferdinand, rampant nationalism, and a web of mutual defense alliances. The Great Depression happened in 1929, after the war."
+            },
+            {
+                "question": "What empire did Julius Caesar lead?",
+                "options": ["a) Greek Empire", "b) Ottoman Empire", "c) Roman Empire", "d) Byzantine Empire"],
+                "correct": ["c"],
+                "hint": "Think ancient Italy.",
+                "explanation": "Julius Caesar was a Roman general and statesman who played a critical role in the events leading to the downfall of the Roman Republic and the rise of the Roman Empire."
+            },
+            {
+                "question": "The Berlin Wall fell in which year?",
+                "options": ["a) 1985", "b) 1987", "c) 1989", "d) 1991"],
+                "correct": ["c"],
+                "hint": "It happened near the end of the Cold War.",
+                "explanation": "The Berlin Wall fell on November 9, 1989, marking a pivotal moment in the end of the Cold War and leading to German reunification in 1990."
             }
         ],
         "science": [
@@ -44,6 +65,27 @@
                 "correct": ["a", "c", "d"],
                 "hint": "Noble gases are in the last column of the periodic table.",
                 "explanation": "Helium, Neon, and Argon are all noble gases. Oxygen is a reactive nonmetal."
+            },
+            {
+                "question": "What force keeps planets in orbit around the Sun?",
+                "options": ["a) Electromagnetism", "b) Gravity", "c) Nuclear force", "d) Friction"],
+                "correct": ["b"],
+                "hint": "Isaac Newton described this force.",
+                "explanation": "Gravity is the attractive force between masses. The Sun's immense gravity keeps planets in elliptical orbits around it."
+            },
+            {
+                "question": "Which of these are parts of the human cell? (Select all that apply)",
+                "options": ["a) Nucleus", "b) Mitochondria", "c) Chloroplast", "d) Cell membrane"],
+                "correct": ["a", "b", "d"],
+                "hint": "One of these is found only in plant cells.",
+                "explanation": "Human (animal) cells contain a nucleus, mitochondria, and cell membrane. Chloroplasts are found only in plant cells for photosynthesis."
+            },
+            {
+                "question": "What is the speed of light in a vacuum (approximately)?",
+                "options": ["a) 300,000 km/s", "b) 150,000 km/s", "c) 1,000,000 km/s", "d) 30,000 km/s"],
+                "correct": ["a"],
+                "hint": "It's roughly 186,000 miles per second.",
+                "explanation": "The speed of light in a vacuum is approximately 299,792 km/s, commonly rounded to 300,000 km/s."
             }
         ],
         "music": [
@@ -67,6 +109,27 @@
                 "correct": ["c"],
                 "hint": "Louis Armstrong is one of its most famous pioneers.",
                 "explanation": "Jazz originated in New Orleans in the late 19th/early 20th century, blending African-American musical traditions."
+            },
+            {
+                "question": "Which band was Freddie Mercury the lead singer of?",
+                "options": ["a) Led Zeppelin", "b) The Rolling Stones", "c) Queen", "d) Aerosmith"],
+                "correct": ["c"],
+                "hint": "Their song 'Bohemian Rhapsody' is legendary.",
+                "explanation": "Freddie Mercury was the lead vocalist of Queen, a British rock band formed in 1970 known for theatrical performances and diverse musical styles."
+            },
+            {
+                "question": "Which of these artists have won Grammy Award for Album of the Year more than once? (Select all that apply)",
+                "options": ["a) Taylor Swift", "b) Frank Sinatra", "c) Stevie Wonder", "d) Beyonce"],
+                "correct": ["a", "c"],
+                "hint": "Think about record-breaking artists in the modern and classic eras.",
+                "explanation": "Taylor Swift has won Album of the Year four times (a record), and Stevie Wonder won three times. Frank Sinatra and Beyonce have not won Album of the Year."
+            },
+            {
+                "question": "The 'Rite of Spring' was composed by which composer?",
+                "options": ["a) Ludwig van Beethoven", "b) Wolfgang Amadeus Mozart", "c) Igor Stravinsky", "d) Johann Sebastian Bach"],
+                "correct": ["c"],
+                "hint": "Its 1913 premiere caused a riot in the audience.",
+                "explanation": "Igor Stravinsky composed 'The Rite of Spring' for the Ballets Russes. Its dissonant harmonies and irregular rhythms caused a famous riot at its Paris premiere in 1913."
             }
         ],
         "nba": [
@@ -90,6 +153,71 @@
                 "correct": ["a", "c", "d"],
                 "hint": "One of the wrong answers was drafted 13th overall.",
                 "explanation": "LeBron James (2003), Tim Duncan (1997), and Anthony Edwards (2020) were all #1 picks. Kobe Bryant was picked 13th in 1996."
+            },
+            {
+                "question": "Who holds the NBA record for most career points scored?",
+                "options": ["a) Michael Jordan", "b) Kareem Abdul-Jabbar", "c) LeBron James", "d) Kobe Bryant"],
+                "correct": ["c"],
+                "hint": "He surpassed the previous record in 2023.",
+                "explanation": "LeBron James surpassed Kareem Abdul-Jabbar's long-standing record of 38,387 points in February 2023, becoming the all-time NBA scoring leader."
+            },
+            {
+                "question": "Which of these players won back-to-back NBA Finals MVP awards? (Select all that apply)",
+                "options": ["a) Michael Jordan", "b) Shaquille O'Neal", "c) LeBron James", "d) Magic Johnson"],
+                "correct": ["a", "b"],
+                "hint": "Both won it with the same team in consecutive years.",
+                "explanation": "Michael Jordan won Finals MVP in 1991-1993 and 1996-1998. Shaquille O'Neal won it in 2000, 2001, and 2002 with the Lakers. LeBron and Magic each won it only once in non-consecutive years."
+            },
+            {
+                "question": "What year was the NBA founded?",
+                "options": ["a) 1940", "b) 1946", "c) 1950", "d) 1954"],
+                "correct": ["b"],
+                "hint": "It happened shortly after World War II ended.",
+                "explanation": "The Basketball Association of America (BAA), which later became the NBA, was founded on June 6, 1946."
+            }
+        ],
+        "geography": [
+            {
+                "question": "What is the capital of Australia?",
+                "options": ["a) Sydney", "b) Melbourne", "c) Canberra", "d) Brisbane"],
+                "correct": ["c"],
+                "hint": "It is not the largest city in Australia.",
+                "explanation": "Canberra is Australia's capital. It was purpose-built to resolve a rivalry between Sydney and Melbourne over which city should be the capital."
+            },
+            {
+                "question": "Which of these countries share a land border with France? (Select all that apply)",
+                "options": ["a) Spain", "b) Italy", "c) United Kingdom", "d) Germany"],
+                "correct": ["a", "b", "d"],
+                "hint": "One of these is separated from France by the English Channel.",
+                "explanation": "France shares land borders with Spain, Italy, Germany, Switzerland, Belgium, Luxembourg, and Monaco. The United Kingdom is separated from France by the English Channel."
+            },
+            {
+                "question": "What is the longest river in the world?",
+                "options": ["a) Amazon", "b) Yangtze", "c) Nile", "d) Mississippi"],
+                "correct": ["c"],
+                "hint": "It flows through northeastern Africa.",
+                "explanation": "The Nile River, flowing through northeastern Africa, is generally considered the world's longest river at approximately 6,650 km."
+            },
+            {
+                "question": "Which continent has the most countries?",
+                "options": ["a) Asia", "b) South America", "c) Europe", "d) Africa"],
+                "correct": ["d"],
+                "hint": "It has 54 recognized countries.",
+                "explanation": "Africa has the most countries of any continent, with 54 recognized sovereign nations."
+            },
+            {
+                "question": "Mount Everest is located on the border of which two countries?",
+                "options": ["a) India and China", "b) Nepal and China", "c) Nepal and India", "d) Pakistan and China"],
+                "correct": ["b"],
+                "hint": "It is in the Himalayas, between South Asia and East Asia.",
+                "explanation": "Mount Everest sits on the border between Nepal and China (Tibet). The peak was first summited by Edmund Hillary and Tenzing Norgay in 1953."
+            },
+            {
+                "question": "Which of these are island nations? (Select all that apply)",
+                "options": ["a) Japan", "b) Iceland", "c) New Zealand", "d) Portugal"],
+                "correct": ["a", "b", "c"],
+                "hint": "One of the answers is on the Iberian Peninsula.",
+                "explanation": "Japan, Iceland, and New Zealand are all island nations entirely surrounded by ocean. Portugal is located on the Iberian Peninsula and shares a land border with Spain."
             }
         ]
     }
