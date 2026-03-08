@@ -1,18 +1,33 @@
 {
   "users": {
     "Justin Todd": {
-      "high_score": 5,
+      "high_score": 6,
       "history": [
         {
           "score": 5,
           "category": "history",
           "date": "2026-03-07 15:15"
+        },
+        {
+          "score": 6,
+          "category": "science",
+          "date": "2026-03-07 15:33"
+        }
+      ]
+    },
+    "guest": {
+      "high_score": 2,
+      "history": [
+        {
+          "score": 2,
+          "category": "science",
+          "date": "2026-03-07 15:32"
         }
       ]
     }
   },
   "grand_champion": {
     "name": "Justin Todd",
-    "score": 5
+    "score": 6
   }
 }
