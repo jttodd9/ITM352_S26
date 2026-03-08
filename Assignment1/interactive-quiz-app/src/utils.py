@@ -1,43 +1,38 @@
 # src/utils.py
-# ============================================================
-# Utility Module - ITM352 Spring 2026 - Assignment 1
+# ITM352 - Spring 2026 - Assignment 1
+# Justin
 #
-# Shared helper functions used throughout the quiz application.
-# ============================================================
+# Small helper functions that get used in multiple places.
+# I put them here so I'm not copy-pasting the same input loop everywhere.
 
 import os
 
 
 def get_valid_input(prompt, valid_options):
     """
-    Repeatedly prompt the user until they enter one of the accepted values.
-    Ensures no invalid response is accepted (a core assignment requirement).
+    Keeps asking the user for input until they enter something valid.
+    This is how we make sure no invalid response ever gets through --
+    the loop just keeps re-prompting until they give us something in the list.
 
-    Args:
-        prompt (str):           The text to display before each input attempt.
-        valid_options (list):   Acceptable string values (case-insensitive).
-
-    Returns:
-        str: A value that is guaranteed to be in valid_options.
+    Comparison is case-insensitive so "A" and "a" both work.
     """
-    # Normalise valid options to lowercase for comparison
     valid_lower = [v.lower() for v in valid_options]
 
     while True:
         user_input = input(prompt).strip().lower()
         if user_input in valid_lower:
             return user_input
-        options_str = ", ".join(valid_options)
-        print(f"  Invalid input. Please choose from: {options_str}")
+        # Show them what we actually want
+        print(f"  That's not valid. Please choose from: {', '.join(valid_options)}")
 
 
 def clear_screen():
-    """Clear the terminal screen for a cleaner display between questions."""
+    """Clears the terminal between questions so the screen doesn't get cluttered."""
     os.system("cls" if os.name == "nt" else "clear")
 
 
 def display_banner():
-    """Print the application title banner at startup."""
+    """Prints the title screen when the app starts."""
     print("=" * 50)
     print("     INTERACTIVE QUIZ APPLICATION")
     print("     ITM352 — Spring 2026")

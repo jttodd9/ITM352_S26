@@ -1,37 +1,27 @@
 # src/scoring.py
-# ============================================================
-# Scoring Module - ITM352 Spring 2026 - Assignment 1
+# ITM352 - Spring 2026 - Assignment 1
+# Justin
 #
-# Handles all score persistence:
-#   - Load / save scores from a JSON file (requirement 1)
-#   - Track personal high scores per user (extra credit)
-#   - Determine and store the grand champion (extra credit)
-# ============================================================
+# Handles reading and writing the scores file. I broke this out into its
+# own module so quiz.py doesn't have to deal with file I/O at all.
+#
+# The scores are saved as JSON in data/scores.json. I chose JSON over a
+# plain text file because it made it easy to store structured data like
+# the history list and grand champion without having to write a custom parser.
 
 import json
 import os
 from datetime import datetime
 
-# Score file lives in the data/ directory next to questions.json
+# Keep scores next to questions.json in the data folder
 SCORES_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "scores.json")
 
 
 def load_scores():
     """
-    Load the scores database from the JSON file.
-
-    If the file does not exist or cannot be parsed, returns a blank structure.
-
-    Returns:
-        dict: {
-            "users": {
-                "<username>": {
-                    "high_score": int,
-                    "history": [{"score": int, "category": str, "date": str}, ...]
-                }
-            },
-            "grand_champion": {"name": str, "score": int} | None
-        }
+    Reads scores.json and returns the data as a dict. If the file doesn't
+    exist yet (first run) or is somehow broken, we just return an empty
+    structure so the rest of the program doesn't have to handle None checks.
     """
     if not os.path.exists(SCORES_FILE):
         return {"users": {}, "grand_champion": None}
@@ -45,19 +35,14 @@ def load_scores():
 
 def save_score(scores, username, category, score):
     """
-    Record a completed game, updating the user's history, personal high score,
-    and the overall grand champion. Writes the updated data back to disk.
+    Records a completed game for a player. Updates their history list,
+    their personal high score if they beat it, and the grand champion
+    record if they beat that too. Then writes everything back to disk.
 
-    Args:
-        scores (dict):   The current scores dict (from load_scores).
-        username (str):  The player's name.
-        category (str):  The quiz category that was played.
-        score (int):     The total score (base + bonus) achieved.
-
-    Returns:
-        bool: True if this score is a new personal high score for the user.
+    Returns True if this was a new personal high score, so quiz.py
+    knows whether to show the congratulations message.
     """
-    # Create a fresh entry for first-time users
+    # First time we've seen this username -- set them up
     if username not in scores["users"]:
         scores["users"][username] = {
             "high_score": 0,
@@ -70,17 +55,17 @@ def save_score(scores, username, category, score):
     if is_new_high:
         user_data["high_score"] = score
 
-    # Append this game to the user's history log
+    # Add this game to their history with a timestamp
     user_data["history"].append({
         "score": score,
         "category": category,
         "date": datetime.now().strftime("%Y-%m-%d %H:%M")
     })
 
-    # Check whether this score beats the grand champion record
+    # See if they beat the all-time record
     _update_grand_champion(scores, username, score)
 
-    # Write everything to disk
+    # Write to disk -- makedirs handles the case where data/ doesn't exist yet
     os.makedirs(os.path.dirname(SCORES_FILE), exist_ok=True)
     with open(SCORES_FILE, "w") as f:
         json.dump(scores, f, indent=2)
@@ -89,16 +74,7 @@ def save_score(scores, username, category, score):
 
 
 def get_high_score(scores, username):
-    """
-    Return the personal high score for a given username.
-
-    Args:
-        scores (dict): The loaded scores dictionary.
-        username (str): The player's name.
-
-    Returns:
-        int: The player's highest score, or 0 if they have no record.
-    """
+    """Returns a player's personal best, or 0 if they haven't played before."""
     if username in scores["users"]:
         return scores["users"][username]["high_score"]
     return 0
@@ -106,22 +82,16 @@ def get_high_score(scores, username):
 
 def get_grand_champion(scores):
     """
-    Return the current grand champion entry.
-
-    Returns:
-        dict | None: {"name": str, "score": int}, or None if no games played yet.
+    Returns the grand champion entry (a dict with 'name' and 'score'),
+    or None if nobody has played yet.
     """
     return scores.get("grand_champion")
 
 
 def _update_grand_champion(scores, username, score):
     """
-    Update the grand champion record if the given score beats it.
-
-    Args:
-        scores (dict):   The full scores dictionary (modified in place).
-        username (str):  The player's name.
-        score (int):     The score to compare.
+    Checks if this score beats the current grand champion and updates
+    the record if so. Called internally by save_score every time a game ends.
     """
     current_champ = scores.get("grand_champion")
     if current_champ is None or score > current_champ["score"]:

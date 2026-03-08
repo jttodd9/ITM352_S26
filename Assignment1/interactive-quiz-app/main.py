@@ -1,16 +1,18 @@
 # main.py
-# ============================================================
-# Interactive Quiz Application — Entry Point
-# ITM352 Spring 2026 - Assignment 1
+# ITM352 - Spring 2026 - Assignment 1
+# Justin
 #
-# Run with:  python main.py
-# ============================================================
+# Entry point for the quiz app. All it does is kick off the Quiz class --
+# the actual game logic lives in src/quiz.py.
+#
+# Run the quiz:        python main.py
+# Add new questions:   python question_creator.py
 
 from src.quiz import Quiz
 
 
 def main():
-    """Create a Quiz instance and start the game."""
+    # Create a quiz and start it -- Quiz loads the questions automatically
     quiz = Quiz()
     quiz.run()
 
