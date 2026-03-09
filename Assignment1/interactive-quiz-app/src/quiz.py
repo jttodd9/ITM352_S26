@@ -2,19 +2,8 @@
 # ITM352 - Spring 2026 - Assignment 1
 # Justin
 #
-# This is the main Quiz class. It handles everything that happens
-# during a game: loading questions, login, picking a category,
-# running through each question, and showing the final score.
-#
-# Features handled here:
-#   - User login and personal high scores (extra credit)
-#   - Category selection (req 5)
-#   - Hints during questions (req 6)
-#   - 50/50 lifeline -- eliminates two wrong answers, once per game (req 10)
-#   - Multiple correct answers and flexible input parsing (req 3 & 4)
-#   - Per-question timer with speed bonus points (req 9)
-#   - Explanations shown after every answer (req 7)
-#   - Score saved to file and high score check at the end (req 1 & 2)
+# All the quiz logic lives here as plain functions.
+# run_quiz() is the main one, it calls all the others in order.
 
 import json
 import os
@@ -23,314 +12,341 @@ import time
 from src.scoring import load_scores, save_score, get_grand_champion
 from src.utils import get_valid_input, clear_screen, display_banner
 
+# Path to the questions file, built so it works from any directory.
+QUESTIONS_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "questions.json")
 
-class Quiz:
-    """
-    Handles the full quiz from start to finish.
+# How fast the player needs to answer to earn a bonus point.
+BONUS_THRESHOLD = 10
+BONUS_POINTS = 1
 
-    I put everything in one class to keep related stuff together -- login,
-    category picking, question loop, and results. The scoring/file stuff
-    lives in scoring.py so this file doesn't get too long.
-    """
 
-    # Using os.path.join so the file path works no matter where you run the script from
-    QUESTIONS_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "questions.json")
+# Opens questions.json and returns the categories dictionary.
+# Returns an empty dict instead of crashing if the file is missing
+# or has a formatting error.
+def load_questions():
+    try:
+        file = open(QUESTIONS_FILE, "r")
+        data = json.load(file)
+        file.close()
+        return data["categories"]
+    except FileNotFoundError:
+        print("Error: could not find the questions file.")
+        return {}
+    except json.JSONDecodeError:
+        print("Error: questions file has a formatting problem.")
+        return {}
 
-    # Answer within 10 seconds to earn a bonus point
-    BONUS_THRESHOLD = 10
-    BONUS_POINTS = 1
 
-    def __init__(self):
-        self.username = ""
-        self.score = 0
-        self.bonus_score = 0
-        self.questions = []
-        self.category = ""
-        self.fifty_fifty_used = False  # only gets one use per game
-        self.questions_data = self._load_questions()
+# Asks the player for a name and loads their saved stats.
+# Shows their personal best and the grand champion if either exists.
+# Returns the name string so run_quiz() can use it later.
+def get_username():
+    print("\n" + "=" * 50)
+    print("Enter your name, or press Enter to play as guest:")
+    name = input("> ").strip()
 
-    def run(self):
-        # Main flow -- each step leads into the next
-        display_banner()
-        self._login()
-        self._select_category()
-        self._run_quiz()
-        self._show_results()
+    # Default to guest if they just hit Enter.
+    if name == "":
+        name = "guest"
 
-    # ----------------------------------------------------------------
-    # Loading questions
-    # ----------------------------------------------------------------
+    print("\nWelcome, " + name + "!")
 
-    def _load_questions(self):
-        """
-        Reads questions.json and returns it as a dict. If the file is
-        missing or has bad JSON, we return an empty structure instead of
-        crashing so the error message is actually readable.
-        """
-        try:
-            with open(self.QUESTIONS_FILE, "r") as f:
-                return json.load(f)
-        except FileNotFoundError:
-            print(f"Couldn't find the questions file at: {self.QUESTIONS_FILE}")
-            return {"categories": {}}
-        except json.JSONDecodeError:
-            print("The questions file has a formatting error -- check the JSON and try again.")
-            return {"categories": {}}
+    # Load scores so we can show their history right at login.
+    scores = load_scores()
 
-    # ----------------------------------------------------------------
-    # Login (extra credit)
-    # ----------------------------------------------------------------
+    # Only show a personal best if they've played before.
+    if name in scores["users"]:
+        best = scores["users"][name]["high_score"]
+        print("  Your personal best: " + str(best) + " points")
 
-    def _login(self):
-        """
-        Asks for a username so we can track scores per player.
-        Pressing Enter defaults to 'guest'. Shows your personal best
-        and the current grand champion if either one exists.
-        """
-        print("\n" + "=" * 50)
-        print("Enter your name to log in, or press Enter to play as guest:")
-        name = input("> ").strip()
-        self.username = name if name else "guest"
+    # Show the grand champion so there's something to aim for.
+    champion = get_grand_champion(scores)
+    if champion is not None:
+        print("  Grand Champion: " + champion["name"] + " - " + str(champion["score"]) + " points")
 
-        print(f"\nWelcome, {self.username}!")
+    return name
 
-        # Show their previous high score if they've played before
-        scores = load_scores()
-        if self.username in scores["users"]:
-            personal_best = scores["users"][self.username]["high_score"]
-            print(f"  Your personal best: {personal_best} points")
 
-        # Show the grand champion so there's something to beat
-        champion = get_grand_champion(scores)
-        if champion:
-            print(f"  Grand Champion:     {champion['name']} — {champion['score']} points")
+# Shows all the categories from the JSON and lets the player pick one.
+# Keeps re-prompting if they type something that isn't a valid number.
+# Returns the chosen category name as a string.
+def choose_category(categories):
+    # Pull the category names into a list so we can index them by number.
+    category_list = list(categories.keys())
 
-    # ----------------------------------------------------------------
-    # Category selection (req 5)
-    # ----------------------------------------------------------------
+    print("\n" + "=" * 50)
+    print("Pick a category:")
 
-    def _select_category(self):
-        """
-        Reads the categories out of the JSON and lets the player pick one.
-        get_valid_input() handles re-prompting if they type something invalid.
-        """
-        categories = list(self.questions_data["categories"].keys())
+    # Print each category with its number and question count.
+    i = 1
+    for cat in category_list:
+        count = len(categories[cat])
+        print("  " + str(i) + ". " + cat.title() + "  (" + str(count) + " questions)")
+        i = i + 1
 
-        print("\n" + "=" * 50)
-        print("Pick a category:")
-        for i, cat in enumerate(categories, start=1):
-            q_count = len(self.questions_data["categories"][cat])
-            print(f"  {i}. {cat.title()}  ({q_count} questions)")
+    # Build the list of numbers we'll accept as input.
+    valid = []
+    for i in range(1, len(category_list) + 1):
+        valid.append(str(i))
 
-        valid_nums = [str(i) for i in range(1, len(categories) + 1)]
-        choice = get_valid_input(f"\nEnter a number (1-{len(categories)}): ", valid_nums)
-        self.category = categories[int(choice) - 1]
-        self.questions = self.questions_data["categories"][self.category]
+    choice = get_valid_input("Enter a number: ", valid)
 
-        print(f"\nAlright, {self.category.title()} it is!")
-        print(f"{len(self.questions)} questions coming up.\n")
-        print("How it works:")
-        print("  Type a letter to answer            (e.g. 'b')")
-        print("  Separate letters for multi-answer  (e.g. 'a,c' or 'acd')")
-        print("  Type 'hint' for a hint             (if one is available)")
-        print("  Type '5050' to eliminate 2 wrong answers  (once per game)")
-        print(f"  Answer in under {self.BONUS_THRESHOLD}s to earn a +{self.BONUS_POINTS} speed bonus!")
-        input("\nPress Enter when you're ready...")
+    # Subtract 1 because lists are zero-indexed but our menu starts at 1.
+    chosen = category_list[int(choice) - 1]
+    return chosen
 
-    # ----------------------------------------------------------------
-    # Main question loop
-    # ----------------------------------------------------------------
 
-    def _run_quiz(self):
-        """Loops through each question and calls _ask_question() for each one."""
-        self.score = 0
-        self.bonus_score = 0
-        self.fifty_fifty_used = False
+# Converts whatever the player typed into a clean list of letters.
+# Handles formats like "b", "a,c", "a, c", and "acd".
+# Returns an empty list if the input contains anything that isn't a letter.
+def parse_answer(user_input):
+    # Strip commas and spaces first so all the formats end up the same.
+    cleaned = user_input.replace(",", "").replace(" ", "")
 
-        for idx, question_data in enumerate(self.questions):
-            clear_screen()
-            running_total = self.score + self.bonus_score
-            print(f"\n--- Question {idx + 1} of {len(self.questions)} "
-                  f"| Score: {running_total} ---")
-            self._ask_question(question_data)
-            print()
+    # Split the string into one character per item in the list.
+    letters = []
+    for char in cleaned:
+        letters.append(char)
 
-    def _ask_question(self, question_data):
-        """
-        Shows one question and keeps looping until the player gives a valid answer.
+    # Reject the whole input if any character isn't a letter.
+    for char in letters:
+        if not char.isalpha():
+            return []
 
-        This function is doing a lot -- hints, 50/50, multi-answer parsing,
-        timing, correctness checking, and showing the explanation. I kept it
-        in one function because all these pieces share the same state (the
-        options list, the eliminated set, the timer) and splitting it up
-        would have meant passing a lot of variables around.
-        """
-        correct_answers = question_data["correct"]  # list like ["b"] or ["a","c","d"]
-        is_multi = len(correct_answers) > 1
+    return letters
 
-        print(f"\n{question_data['question']}")
-        if is_multi:
-            # Let the player know upfront so they don't just enter one letter
-            print("  (Multiple correct answers -- enter all of them, e.g. 'a,c')")
 
-        # Copy the options list so 50/50 can mark eliminations
-        # without messing with the original question data
-        options = list(question_data["options"])
-        eliminated = set()
+# Finds all the wrong-answer letters and returns the first two.
+# Used by the 50/50 lifeline to decide which options to hide.
+def apply_fifty_fifty(options, correct_answers):
+    # Collect every option letter that isn't in the correct answers list.
+    wrong = []
+    for opt in options:
+        letter = opt[0].lower()
+        if letter not in correct_answers:
+            wrong.append(letter)
 
-        # Start timing as soon as the question is on screen
-        start_time = time.time()
+    # Only grab two at most, even if there are more wrong answers.
+    eliminated = []
+    if len(wrong) >= 1:
+        eliminated.append(wrong[0])
+    if len(wrong) >= 2:
+        eliminated.append(wrong[1])
 
-        while True:
-            # Only show options that haven't been eliminated
-            print()
-            for opt in options:
-                letter = opt[0].lower()
-                if letter not in eliminated:
-                    print(f"  {opt}")
+    return eliminated
 
-            # Only show commands that are actually usable right now
-            specials = []
-            if question_data.get("hint") and not eliminated:
-                specials.append("'hint'")
-            if not self.fifty_fifty_used and not eliminated:
-                specials.append("'5050'")
-            if specials:
-                print(f"  [Commands: {', '.join(specials)}]")
 
-            user_input = input("\nYour answer: ").strip().lower()
+# Shows one question and loops until the player gives a valid answer.
+# Handles hints, 50/50, multi-letter input, timing, correctness,
+# and the explanation all in one place.
+# Returns a tuple: (is_correct, fifty_fifty_used, elapsed_seconds).
+def ask_question(question_data, question_num, fifty_fifty_used):
+    correct_answers = question_data["correct"]
 
-            # Hint request (req 6)
-            if user_input == "hint":
-                hint_text = question_data.get("hint", "")
-                if hint_text:
-                    print(f"\n  Hint: {hint_text}")
-                else:
-                    print("\n  No hint available for this one.")
-                continue
+    # Check upfront if this question needs more than one answer.
+    is_multi = len(correct_answers) > 1
 
-            # 50/50 lifeline (req 10)
-            if user_input == "5050":
-                if self.fifty_fifty_used:
-                    print("\n  You already used 50/50 this game!")
-                    continue
-                eliminated = self._apply_fifty_fifty(options, correct_answers)
-                self.fifty_fifty_used = True
-                print("\n  50/50 used -- two wrong answers are gone.")
-                continue
+    print("\n" + question_data["question"])
+    if is_multi:
+        # Let the player know before they see the options.
+        print("(Multiple correct answers -- enter all of them, e.g. 'a,c')")
 
-            # Parse whatever they typed into a list of letters (req 3)
-            parsed = self._parse_answer(user_input)
+    options = list(question_data["options"])
 
-            # Every letter has to be an available (non-eliminated) option
-            available = {opt[0].lower() for opt in options if opt[0].lower() not in eliminated}
-            if not parsed or not all(letter in available for letter in parsed):
-                print(f"\n  Invalid input. Valid options right now: "
-                      f"{', '.join(sorted(available))}")
-                continue
+    # eliminated tracks which letters the 50/50 removed.
+    eliminated = []
 
-            # Catch duplicate entries like "a,a"
-            if len(parsed) != len(set(parsed)):
-                print("\n  You entered the same letter more than once.")
-                continue
+    # Start the clock the moment the question appears on screen.
+    start_time = time.time()
 
-            # Valid answer -- stop the timer
-            elapsed = time.time() - start_time
+    while True:
 
-            # Sort both lists so order doesn't matter (req 4)
-            is_correct = sorted(parsed) == sorted(correct_answers)
+        # Only print options that haven't been eliminated yet.
+        print()
+        for opt in options:
+            letter = opt[0].lower()
+            if letter not in eliminated:
+                print("  " + opt)
 
-            if is_correct:
-                print("\n  Correct!")
-                self.score += 1
-                # Speed bonus if they answered fast enough (req 9)
-                if elapsed <= self.BONUS_THRESHOLD:
-                    self.bonus_score += self.BONUS_POINTS
-                    print(f"  Speed bonus! Answered in {elapsed:.1f}s "
-                          f"(+{self.BONUS_POINTS} bonus point)")
+        # Only show a command if it's actually usable at this point.
+        if question_data.get("hint") and len(eliminated) == 0:
+            print("  [type 'hint' for a hint]")
+        if not fifty_fifty_used and len(eliminated) == 0:
+            print("  [type '5050' to remove two wrong answers]")
+
+        user_input = input("\nYour answer: ").strip().lower()
+
+        # Show the hint and loop back without counting it as an answer.
+        if user_input == "hint":
+            hint_text = question_data.get("hint", "")
+            if hint_text != "":
+                print("\nHint: " + hint_text)
             else:
-                correct_str = ", ".join(correct_answers).upper()
-                print(f"\n  Not quite. Correct answer(s): {correct_str}")
+                print("\nNo hint available for this one.")
+            continue
 
-            print(f"  Time: {elapsed:.1f}s")
+        # Apply 50/50 and loop back, the player still needs to answer.
+        if user_input == "5050":
+            if fifty_fifty_used:
+                print("\nYou already used 50/50 this game!")
+                continue
+            eliminated = apply_fifty_fifty(options, correct_answers)
+            fifty_fifty_used = True
+            print("\n50/50 used -- two wrong answers are gone.")
+            continue
 
-            # Show the explanation whether they got it right or not (req 7)
-            explanation = question_data.get("explanation", "")
-            if explanation:
-                print(f"\n  Explanation: {explanation}")
+        # Turn the raw input into a list of letters.
+        parsed = parse_answer(user_input)
 
-            break  # move to the next question
+        # Build the list of letters still on the board after any 50/50.
+        available = []
+        for opt in options:
+            letter = opt[0].lower()
+            if letter not in eliminated:
+                available.append(letter)
 
-    # ----------------------------------------------------------------
-    # Helpers
-    # ----------------------------------------------------------------
-
-    def _parse_answer(self, raw):
-        """
-        Turns whatever the user typed into a clean list of letters.
-        Handles "b", "a,c", "a, c", "acd", "a c" -- basically any
-        reasonable way someone might type a multi-letter answer.
-        Returns [] if there are non-letter characters in the input.
-        """
-        # Stripping commas and spaces means "a, c" and "ac" both end up as ['a','c']
-        cleaned = raw.replace(",", "").replace(" ", "")
-        letters = list(cleaned)
-        if letters and all(c.isalpha() for c in letters):
-            return letters
-        return []
-
-    def _apply_fifty_fifty(self, options, correct_answers):
-        """
-        Picks two wrong answers to eliminate for the 50/50 lifeline.
-        Just grabs the first two wrong ones in the list -- simple and consistent.
-        """
-        wrong = [opt[0].lower() for opt in options
-                 if opt[0].lower() not in correct_answers]
-        return set(wrong[:2])
-
-    # ----------------------------------------------------------------
-    # Results (req 1 & 2)
-    # ----------------------------------------------------------------
-
-    def _show_results(self):
-        """
-        Shows the final score, saves it to the file, tells the player
-        if they set a new personal best, and shows the grand champion.
-        """
-        total = self.score + self.bonus_score
-        num_q = len(self.questions)
-        percentage = (self.score / num_q * 100) if num_q else 0
-
-        clear_screen()
-        print("\n" + "=" * 50)
-        print("  QUIZ COMPLETE!")
-        print("=" * 50)
-        print(f"  Player:       {self.username}")
-        print(f"  Category:     {self.category.title()}")
-        print(f"  Base Score:   {self.score} / {num_q}  ({percentage:.0f}%)")
-        print(f"  Bonus Points: {self.bonus_score}")
-        print(f"  TOTAL:        {total}")
-        print("=" * 50)
-
-        if percentage == 100:
-            print("  Perfect score! Nice!")
-        elif percentage >= 70:
-            print("  Great job!")
-        elif percentage >= 50:
-            print("  Not bad, keep studying!")
+        # Reject if the input was empty or had a letter not on the board.
+        valid_input = True
+        if len(parsed) == 0:
+            valid_input = False
         else:
-            print("  Better luck next time!")
+            for letter in parsed:
+                if letter not in available:
+                    valid_input = False
 
-        # Save to the scores file and check if it's a new personal best
-        scores = load_scores()
-        is_new_high = save_score(scores, self.username, self.category, total)
+        if not valid_input:
+            print("\nInvalid input. Please enter from: " + ", ".join(available))
+            continue
 
-        if is_new_high:
-            print(f"\n  *** New personal high score for {self.username}! ***")
+        # Reject duplicate letters like "a,a".
+        seen = []
+        has_duplicate = False
+        for letter in parsed:
+            if letter in seen:
+                has_duplicate = True
+            seen.append(letter)
 
-        # Reload after saving so we get the updated champion record
-        champion = get_grand_champion(load_scores())
-        if champion:
-            print(f"\n  Grand Champion: {champion['name']} — {champion['score']} points")
+        if has_duplicate:
+            print("\nYou entered the same letter more than once.")
+            continue
 
-        print("\nThanks for playing!\n")
+        # Stop the clock now that we have a real answer.
+        elapsed = time.time() - start_time
+
+        # Sort both lists so the order the player typed doesn't matter.
+        is_correct = sorted(parsed) == sorted(correct_answers)
+
+        if is_correct:
+            print("\nCorrect!")
+        else:
+            # Show what the right answers were so they know what they missed.
+            correct_display = ", ".join(correct_answers).upper()
+            print("\nIncorrect. The correct answer(s): " + correct_display)
+
+        print("Time: " + str(round(elapsed, 1)) + "s")
+
+        # Always show the explanation so the player learns something.
+        explanation = question_data.get("explanation", "")
+        if explanation != "":
+            print("\nExplanation: " + explanation)
+
+        # Hand the results back to run_quiz() and move on.
+        return is_correct, fifty_fifty_used, elapsed
+
+
+# The main function that ties everything together.
+# Runs the full quiz from the banner screen to the final score printout.
+def run_quiz():
+    display_banner()
+
+    # Get a name and show any existing stats for that player.
+    username = get_username()
+
+    # Load the questions file and bail out if it failed.
+    categories = load_questions()
+    if len(categories) == 0:
+        return
+
+    # Let the player pick which category they want to be quizzed on.
+    category = choose_category(categories)
+    questions = categories[category]
+
+    print("\nAlright, " + category.title() + " it is!")
+    print(str(len(questions)) + " questions coming up.\n")
+    print("How it works:")
+    print("  Type a letter to answer                 (e.g. 'b')")
+    print("  For multi-answer questions use commas   (e.g. 'a,c')")
+    print("  Type 'hint' for a hint")
+    print("  Type '5050' to eliminate 2 wrong answers (once per game)")
+    print("  Answer in under " + str(BONUS_THRESHOLD) + " seconds for a +" + str(BONUS_POINTS) + " speed bonus!")
+    input("\nPress Enter when you're ready...")
+
+    # These three variables track everything that changes during the quiz.
+    score = 0
+    bonus_score = 0
+    fifty_fifty_used = False
+
+    # Go through every question in order.
+    for i in range(len(questions)):
+        clear_screen()
+
+        # Show the running total so the player can see how they're doing.
+        running_total = score + bonus_score
+        print("\n--- Question " + str(i + 1) + " of " + str(len(questions)) +
+              " | Score: " + str(running_total) + " ---")
+
+        # ask_question handles all the interaction and returns the results.
+        is_correct, fifty_fifty_used, elapsed = ask_question(questions[i], i + 1, fifty_fifty_used)
+
+        if is_correct:
+            score = score + 1
+            # Award the speed bonus if they were fast enough.
+            if elapsed <= BONUS_THRESHOLD:
+                bonus_score = bonus_score + BONUS_POINTS
+                print("Speed bonus! +" + str(BONUS_POINTS) + " point for answering in " + str(round(elapsed, 1)) + "s")
+
+        print()
+
+    # Add base score and bonus together for the final number.
+    total = score + bonus_score
+
+    # Avoid dividing by zero if somehow there are no questions.
+    if len(questions) > 0:
+        percentage = (score / len(questions)) * 100
+    else:
+        percentage = 0
+
+    clear_screen()
+    print("\n" + "=" * 50)
+    print("  QUIZ COMPLETE!")
+    print("=" * 50)
+    print("  Player:       " + username)
+    print("  Category:     " + category.title())
+    print("  Base Score:   " + str(score) + " / " + str(len(questions)) + "  (" + str(round(percentage)) + "%)")
+    print("  Bonus Points: " + str(bonus_score))
+    print("  TOTAL:        " + str(total))
+    print("=" * 50)
+
+    # Give the player a message based on how well they did.
+    if percentage == 100:
+        print("  Perfect score!")
+    elif percentage >= 70:
+        print("  Great job!")
+    elif percentage >= 50:
+        print("  Not bad, keep studying!")
+    else:
+        print("  Better luck next time!")
+
+    # Save to file and find out if they beat their own record.
+    scores = load_scores()
+    is_new_high = save_score(scores, username, category, total)
+
+    if is_new_high:
+        print("\n*** New personal high score for " + username + "! ***")
+
+    # Reload the scores after saving so we get the updated champion.
+    champion = get_grand_champion(load_scores())
+    if champion is not None:
+        print("\nGrand Champion: " + champion["name"] + " - " + str(champion["score"]) + " points")
+
+    print("\nThanks for playing!\n")

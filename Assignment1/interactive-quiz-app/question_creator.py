@@ -2,159 +2,172 @@
 # ITM352 - Spring 2026 - Assignment 1
 # Justin
 #
-# Separate app for adding questions to the quiz database (requirement 8).
-# Run this instead of main.py when you want to create new questions --
-# it walks you through entering the question text, options, correct answers,
-# a hint, and an explanation, then saves everything to questions.json in
-# the right format.
-#
+# Separate app for adding quiz questions to the database (requirement 8).
+# Run this when you want to add new questions.
 # Run with: python question_creator.py
 
 import json
 import os
 
-# Same questions file the main quiz uses
+# Same questions file the main quiz reads from.
 QUESTIONS_FILE = os.path.join(os.path.dirname(__file__), "data", "questions.json")
 
 
-# ----------------------------------------------------------------
-# File I/O
-# ----------------------------------------------------------------
-
+# Loads questions.json and returns all the data inside.
+# If the file doesn't exist yet, returns an empty starting structure.
 def load_data():
-    """
-    Loads the existing questions from the JSON file. If it doesn't exist
-    yet we just return an empty structure -- the first question you add
-    will create the file.
-    """
     if not os.path.exists(QUESTIONS_FILE):
         return {"categories": {}}
     try:
-        with open(QUESTIONS_FILE, "r") as f:
-            return json.load(f)
-    except (json.JSONDecodeError, OSError):
-        print("Warning: couldn't read the questions file, starting fresh.")
+        file = open(QUESTIONS_FILE, "r")
+        data = json.load(file)
+        file.close()
+        return data
+    except:
+        # Something went wrong, start fresh rather than crash.
+        print("Warning: couldn't read the file, starting fresh.")
         return {"categories": {}}
 
 
+# Writes the data dictionary back to questions.json.
 def save_data(data):
-    """Writes the questions data back to questions.json."""
     os.makedirs(os.path.dirname(QUESTIONS_FILE), exist_ok=True)
-    with open(QUESTIONS_FILE, "w") as f:
-        json.dump(data, f, indent=4)
-    print(f"\n  Saved to {QUESTIONS_FILE}")
+    file = open(QUESTIONS_FILE, "w")
+    json.dump(data, file, indent=4)
+    file.close()
+    print("\nSaved to " + QUESTIONS_FILE)
 
 
-# ----------------------------------------------------------------
-# Category helpers
-# ----------------------------------------------------------------
+# Shows all existing categories and lets the user pick one or make a
+# new one. Keeps looping until they enter a valid number.
+# Returns the chosen category name as a lowercase string.
+def pick_category(data):
+    # Get the category names as an ordered list so we can number them.
+    category_list = list(data["categories"].keys())
 
-def pick_or_create_category(data):
-    """
-    Shows the existing categories and lets the user pick one or make a new one.
-    Keeps re-prompting if they type something that isn't a valid number.
-    """
-    categories = list(data["categories"].keys())
-
-    print("\n  Existing categories:")
-    for i, cat in enumerate(categories, start=1):
+    print("\nExisting categories:")
+    i = 1
+    for cat in category_list:
         count = len(data["categories"][cat])
-        print(f"    {i}. {cat.title()}  ({count} question(s))")
-    print(f"    {len(categories) + 1}. Create a new category")
+        print("  " + str(i) + ". " + cat.title() + "  (" + str(count) + " question(s))")
+        i = i + 1
+
+    # The last option is always "create new category".
+    print("  " + str(len(category_list) + 1) + ". Create a new category")
 
     while True:
-        choice = input("\n  Your choice: ").strip()
+        choice = input("\nYour choice: ").strip()
+
         if choice.isdigit():
             idx = int(choice) - 1
-            if 0 <= idx < len(categories):
-                return categories[idx]
-            elif idx == len(categories):
-                return _create_category(data)
-        print("  Please enter a valid number.")
+
+            # They picked an existing category.
+            if idx >= 0 and idx < len(category_list):
+                return category_list[idx]
+
+            # They picked the "create new" option.
+            elif idx == len(category_list):
+                while True:
+                    new_name = input("New category name: ").strip().lower()
+                    if new_name != "":
+                        # Add it to the dict with an empty question list.
+                        if new_name not in data["categories"]:
+                            data["categories"][new_name] = []
+                        return new_name
+                    print("Name can't be empty.")
+
+        print("Please enter a valid number.")
 
 
-def _create_category(data):
-    """Prompts for a new category name and adds it to the data dict."""
-    while True:
-        name = input("  New category name: ").strip().lower()
-        if name:
-            if name in data["categories"]:
-                print(f"  '{name}' already exists, switching to it.")
-            else:
-                data["categories"][name] = []
-                print(f"  Category '{name}' created.")
-            return name
-        print("  Category name can't be empty.")
-
-
-# ----------------------------------------------------------------
-# Question builder
-# ----------------------------------------------------------------
-
+# Walks the user through entering all the parts of a new question
+# interactively, then returns a dict formatted for questions.json.
+# First 4 options are required, options e and f are optional.
 def build_question():
-    """
-    Walks the user through entering all the parts of a question interactively.
-    Requires at least 4 options, up to 6. Returns a dict that matches the
-    format questions.json expects.
-    """
-    print("\n  --- New Question ---")
+    print("\n--- New Question ---")
 
-    # Get the question text -- can't be empty
+    # Keep asking until they give us actual text.
     question_text = ""
-    while not question_text:
-        question_text = input("  Question text: ").strip()
-        if not question_text:
-            print("  Question text can't be empty.")
+    while question_text == "":
+        question_text = input("Question text: ").strip()
+        if question_text == "":
+            print("Can't be empty.")
 
-    # Collect options a-f, first 4 are required
+    # We'll go through letters a-f and stop when they skip one.
     letters = ["a", "b", "c", "d", "e", "f"]
     options = []
 
-    print("\n  Enter the answer options (first 4 are required).")
+    print("\nEnter the answer options (first 4 are required).")
     for letter in letters:
+        # The first 4 are required, the rest are optional.
         required = len(options) < 4
-        prompt = f"  Option {letter}{'*' if required else ' (optional -- press Enter to stop)'}: "
+
+        if required:
+            prompt = "Option " + letter + "*: "
+        else:
+            prompt = "Option " + letter + " (optional, press Enter to stop): "
+
         while True:
             text = input(prompt).strip()
-            if text:
-                options.append(f"{letter}) {text}")
+
+            if text != "":
+                options.append(letter + ") " + text)
                 break
             elif not required:
-                # They pressed Enter on an optional one, we're done collecting
-                return _finish_question(question_text, options)
+                # They skipped an optional one, stop collecting options.
+                break
             else:
-                print(f"  Option {letter} is required.")
+                print("Option " + letter + " is required.")
 
-    return _finish_question(question_text, options)
+        # Break out of the outer loop too if they skipped.
+        if text == "" and not required:
+            break
 
+    # Pull the first letter from each option to know what's valid.
+    valid_letters = []
+    for opt in options:
+        valid_letters.append(opt[0])
 
-def _finish_question(question_text, options):
-    """
-    Collects the correct answer(s), hint, and explanation after we have
-    all the options. Split into its own function because build_question()
-    can return early (when the user skips an optional option) and both
-    code paths need to finish the same way.
-    """
-    valid_letters = [opt[0] for opt in options]
-    valid_str = ", ".join(valid_letters)
+    print("\nAvailable options: " + ", ".join(valid_letters))
+    print("Enter the correct answer letter(s) separated by commas (e.g. 'c' or 'a,c,d'):")
 
-    print(f"\n  Available options: {valid_str}")
-    print("  Enter the correct answer letter(s), separated by commas (e.g. 'c' or 'a,c,d'):")
-
+    # Keep asking until we have at least one valid, non-duplicate answer.
     correct = []
-    while not correct:
-        raw = input("  Correct answer(s): ").strip().lower()
-        # Support "a,c" or "a c" or "ac" -- normalize and split into individual letters
-        parsed = [c.strip() for c in raw.replace(",", " ").split() if c.strip()]
-        if parsed and all(c in valid_letters for c in parsed) and len(parsed) == len(set(parsed)):
+    while len(correct) == 0:
+        raw = input("Correct answer(s): ").strip().lower()
+
+        # Split by comma and clean up each piece.
+        pieces = raw.split(",")
+        parsed = []
+        for piece in pieces:
+            piece = piece.strip()
+            if piece != "":
+                parsed.append(piece)
+
+        # Check every letter is actually one of the options.
+        all_valid = True
+        for letter in parsed:
+            if letter not in valid_letters:
+                all_valid = False
+
+        # Check for duplicates by tracking what we've already seen.
+        no_duplicates = True
+        seen = []
+        for letter in parsed:
+            if letter in seen:
+                no_duplicates = False
+            seen.append(letter)
+
+        if len(parsed) > 0 and all_valid and no_duplicates:
             correct = parsed
         else:
-            print(f"  Invalid. Enter one or more of: {valid_str}  (no duplicates)")
+            print("Invalid. Enter one or more of: " + ", ".join(valid_letters) + " (no duplicates)")
 
-    hint = input("\n  Hint (optional -- press Enter to skip): ").strip()
-    explanation = input("  Explanation (why is this the correct answer?): ").strip()
+    # Hint is optional, explanation is good to have but not required.
+    hint = input("\nHint (optional, press Enter to skip): ").strip()
+    explanation = input("Explanation (why is this correct?): ").strip()
 
-    return {
+    # Pack everything into a dict that matches the questions.json format.
+    question = {
         "question": question_text,
         "options": options,
         "correct": correct,
@@ -162,51 +175,50 @@ def _finish_question(question_text, options):
         "explanation": explanation
     }
 
+    return question
 
-# ----------------------------------------------------------------
-# View helper
-# ----------------------------------------------------------------
 
-def view_category(data):
-    """Prints all questions in a chosen category with correct answers marked."""
-    if not data["categories"]:
-        print("\n  No categories yet.")
+# Prints every question in a chosen category with correct answers marked.
+def view_questions(data):
+    if len(data["categories"]) == 0:
+        print("\nNo categories yet.")
         return
 
-    category = pick_or_create_category(data)
-    questions = data["categories"].get(category, [])
+    category = pick_category(data)
+    questions = data["categories"][category]
 
-    if not questions:
-        print(f"\n  No questions in '{category}' yet.")
+    if len(questions) == 0:
+        print("\nNo questions in '" + category + "' yet.")
         return
 
-    print(f"\n  --- {category.title()} ({len(questions)} question(s)) ---")
-    for i, q in enumerate(questions, start=1):
-        print(f"\n  {i}. {q['question']}")
+    print("\n--- " + category.title() + " (" + str(len(questions)) + " question(s)) ---")
+
+    i = 1
+    for q in questions:
+        print("\n" + str(i) + ". " + q["question"])
         for opt in q["options"]:
-            # Put a checkmark next to correct answers so they're easy to spot
-            marker = "✓" if opt[0] in q["correct"] else " "
-            print(f"     [{marker}] {opt}")
-        if q.get("hint"):
-            print(f"       Hint: {q['hint']}")
-        if q.get("explanation"):
-            print(f"       Explanation: {q['explanation']}")
+            # Show [CORRECT] next to any option that's a right answer.
+            if opt[0] in q["correct"]:
+                marker = "[CORRECT]"
+            else:
+                marker = "         "
+            print("   " + marker + " " + opt)
+        if q.get("hint") != "":
+            print("   Hint: " + q.get("hint", ""))
+        i = i + 1
 
 
-# ----------------------------------------------------------------
-# Main menu
-# ----------------------------------------------------------------
-
+# Main menu loop, runs until the user saves and exits or exits without saving.
 def main():
-    """Simple menu loop -- add questions, view them, or save and exit."""
     print("=" * 50)
     print("     QUIZ QUESTION CREATOR")
-    print("     ITM352 — Spring 2026")
+    print("     ITM352 - Spring 2026")
     print("=" * 50)
-    print("Add new questions to the quiz database.")
 
     data = load_data()
-    unsaved_changes = False
+
+    # Track whether there are changes that haven't been written to disk yet.
+    unsaved = False
 
     while True:
         print("\n" + "-" * 30)
@@ -215,34 +227,34 @@ def main():
         print("  3. Save and exit")
         print("  4. Exit without saving")
 
-        choice = input("\n  Choice: ").strip()
+        choice = input("\nChoice: ").strip()
 
         if choice == "1":
-            category = pick_or_create_category(data)
+            category = pick_category(data)
             question = build_question()
             data["categories"][category].append(question)
-            unsaved_changes = True
-            print(f"\n  Question added to '{category.title()}'!")
+            unsaved = True
+            print("\nQuestion added to '" + category.title() + "'!")
 
         elif choice == "2":
-            view_category(data)
+            view_questions(data)
 
         elif choice == "3":
             save_data(data)
-            print("  Goodbye!")
+            print("Goodbye!")
             break
 
         elif choice == "4":
-            if unsaved_changes:
-                confirm = input("  You have unsaved changes. Really exit? (y/n): ").strip().lower()
+            # Warn them before throwing away unsaved work.
+            if unsaved:
+                confirm = input("You have unsaved changes. Really exit? (y/n): ").strip().lower()
                 if confirm != "y":
                     continue
-            print("  Exiting without saving. Goodbye!")
+            print("Exiting without saving. Goodbye!")
             break
 
         else:
-            print("  Please enter 1, 2, 3, or 4.")
+            print("Please enter 1, 2, 3, or 4.")
 
 
-if __name__ == "__main__":
-    main()
+main()
