@@ -24,6 +24,15 @@
           "date": "2026-03-07 15:32"
         }
       ]
+    },
+    "kate": {
+      "high_score": 6,
+      "history": [
+        {
+          "score": 6,
+          "category": "music"
+        }
+      ]
     }
   },
   "grand_champion": {
