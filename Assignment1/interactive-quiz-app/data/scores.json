@@ -1,7 +1,7 @@
 {
   "users": {
     "Justin Todd": {
-      "high_score": 6,
+      "high_score": 12,
       "history": [
         {
           "score": 5,
@@ -12,16 +12,296 @@
           "score": 6,
           "category": "science",
           "date": "2026-03-07 15:33"
+        },
+        {
+          "score": 12,
+          "category": "history"
+        },
+        {
+          "score": 12,
+          "category": "science"
+        },
+        {
+          "score": 12,
+          "category": "music"
+        },
+        {
+          "score": 12,
+          "category": "nba"
+        },
+        {
+          "score": 12,
+          "category": "geography"
+        },
+        {
+          "score": 0,
+          "category": "history"
+        },
+        {
+          "score": 0,
+          "category": "science"
+        },
+        {
+          "score": 0,
+          "category": "music"
+        },
+        {
+          "score": 0,
+          "category": "nba"
+        },
+        {
+          "score": 0,
+          "category": "geography"
+        },
+        {
+          "score": 6,
+          "category": "history"
+        },
+        {
+          "score": 6,
+          "category": "science"
+        },
+        {
+          "score": 4,
+          "category": "music"
+        },
+        {
+          "score": 6,
+          "category": "nba"
+        },
+        {
+          "score": 6,
+          "category": "geography"
+        },
+        {
+          "score": 12,
+          "category": "history"
+        },
+        {
+          "score": 12,
+          "category": "science"
+        },
+        {
+          "score": 12,
+          "category": "history"
+        },
+        {
+          "score": 12,
+          "category": "music"
+        },
+        {
+          "score": 12,
+          "category": "nba"
+        },
+        {
+          "score": 12,
+          "category": "science"
+        },
+        {
+          "score": 12,
+          "category": "geography"
+        },
+        {
+          "score": 12,
+          "category": "history"
+        },
+        {
+          "score": 12,
+          "category": "science"
+        },
+        {
+          "score": 12,
+          "category": "nba"
+        },
+        {
+          "score": 4,
+          "category": "history"
+        },
+        {
+          "score": 4,
+          "category": "music"
+        },
+        {
+          "score": 4,
+          "category": "geography"
+        },
+        {
+          "score": 0,
+          "category": "nba"
+        },
+        {
+          "score": 0,
+          "category": "geography"
+        },
+        {
+          "score": 12,
+          "category": "science"
+        },
+        {
+          "score": 12,
+          "category": "history"
+        },
+        {
+          "score": 12,
+          "category": "science"
+        },
+        {
+          "score": 12,
+          "category": "music"
+        },
+        {
+          "score": 12,
+          "category": "nba"
+        },
+        {
+          "score": 12,
+          "category": "geography"
+        },
+        {
+          "score": 0,
+          "category": "history"
+        },
+        {
+          "score": 0,
+          "category": "science"
+        },
+        {
+          "score": 0,
+          "category": "music"
+        },
+        {
+          "score": 0,
+          "category": "nba"
+        },
+        {
+          "score": 0,
+          "category": "geography"
+        },
+        {
+          "score": 6,
+          "category": "history"
+        },
+        {
+          "score": 6,
+          "category": "science"
+        },
+        {
+          "score": 4,
+          "category": "music"
+        },
+        {
+          "score": 6,
+          "category": "nba"
+        },
+        {
+          "score": 6,
+          "category": "geography"
+        },
+        {
+          "score": 12,
+          "category": "history"
+        },
+        {
+          "score": 12,
+          "category": "science"
+        },
+        {
+          "score": 12,
+          "category": "history"
+        },
+        {
+          "score": 12,
+          "category": "music"
+        },
+        {
+          "score": 12,
+          "category": "nba"
+        },
+        {
+          "score": 12,
+          "category": "science"
+        },
+        {
+          "score": 12,
+          "category": "geography"
+        },
+        {
+          "score": 12,
+          "category": "history"
+        },
+        {
+          "score": 12,
+          "category": "science"
+        },
+        {
+          "score": 12,
+          "category": "nba"
+        },
+        {
+          "score": 4,
+          "category": "history"
+        },
+        {
+          "score": 4,
+          "category": "music"
+        },
+        {
+          "score": 4,
+          "category": "geography"
+        },
+        {
+          "score": 0,
+          "category": "science"
+        },
+        {
+          "score": 0,
+          "category": "music"
+        },
+        {
+          "score": 0,
+          "category": "nba"
+        },
+        {
+          "score": 0,
+          "category": "geography"
+        },
+        {
+          "score": 12,
+          "category": "science"
         }
       ]
     },
     "guest": {
-      "high_score": 2,
+      "high_score": 12,
       "history": [
         {
           "score": 2,
           "category": "science",
           "date": "2026-03-07 15:32"
+        },
+        {
+          "score": 12,
+          "category": "history"
+        },
+        {
+          "score": 0,
+          "category": "music"
+        },
+        {
+          "score": 12,
+          "category": "geography"
+        },
+        {
+          "score": 12,
+          "category": "history"
+        },
+        {
+          "score": 0,
+          "category": "music"
+        },
+        {
+          "score": 12,
+          "category": "geography"
         }
       ]
     },
@@ -33,10 +313,75 @@
           "category": "music"
         }
       ]
+    },
+    "Alice": {
+      "high_score": 12,
+      "history": [
+        {
+          "score": 12,
+          "category": "history"
+        },
+        {
+          "score": 12,
+          "category": "history"
+        }
+      ]
+    },
+    "Bob": {
+      "high_score": 0,
+      "history": [
+        {
+          "score": 0,
+          "category": "science"
+        },
+        {
+          "score": 0,
+          "category": "science"
+        }
+      ]
+    },
+    "Charlie": {
+      "high_score": 12,
+      "history": [
+        {
+          "score": 12,
+          "category": "nba"
+        },
+        {
+          "score": 12,
+          "category": "nba"
+        }
+      ]
+    },
+    "Diana": {
+      "high_score": 12,
+      "history": [
+        {
+          "score": 12,
+          "category": "music"
+        },
+        {
+          "score": 12,
+          "category": "music"
+        }
+      ]
+    },
+    "Eve": {
+      "high_score": 12,
+      "history": [
+        {
+          "score": 12,
+          "category": "geography"
+        },
+        {
+          "score": 12,
+          "category": "geography"
+        }
+      ]
     }
   },
   "grand_champion": {
     "name": "Justin Todd",
-    "score": 6
+    "score": 12
   }
 }
