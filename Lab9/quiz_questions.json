@@ -1,30 +1,45 @@
-# Take the dictionary of quiz questions from Assignment 1
-# and save it as a JSON file
-
-import json
-
-# Quiz questions dictionary (same structure as Assignment 1)
-quiz_data = {
+{
     "categories": {
         "history": [
             {
                 "question": "In what year did World War II end?",
-                "options": ["a) 1943", "b) 1944", "c) 1945", "d) 1946"],
-                "correct": ["c"],
+                "options": [
+                    "a) 1943",
+                    "b) 1944",
+                    "c) 1945",
+                    "d) 1946"
+                ],
+                "correct": [
+                    "c"
+                ],
                 "hint": "It was in the mid-1940s.",
                 "explanation": "WWII ended in 1945 when Japan surrendered after the atomic bombings of Hiroshima and Nagasaki."
             },
             {
                 "question": "Who was the first President of the United States?",
-                "options": ["a) Thomas Jefferson", "b) George Washington", "c) John Adams", "d) Benjamin Franklin"],
-                "correct": ["b"],
+                "options": [
+                    "a) Thomas Jefferson",
+                    "b) George Washington",
+                    "c) John Adams",
+                    "d) Benjamin Franklin"
+                ],
+                "correct": [
+                    "b"
+                ],
                 "hint": "He is known as the 'Father of His Country'.",
                 "explanation": "George Washington served as the first U.S. President from 1789 to 1797."
             },
             {
                 "question": "Which ancient civilization built the pyramids of Giza?",
-                "options": ["a) Romans", "b) Greeks", "c) Egyptians", "d) Mesopotamians"],
-                "correct": ["c"],
+                "options": [
+                    "a) Romans",
+                    "b) Greeks",
+                    "c) Egyptians",
+                    "d) Mesopotamians"
+                ],
+                "correct": [
+                    "c"
+                ],
                 "hint": "This civilization thrived along the Nile River.",
                 "explanation": "The ancient Egyptians built the pyramids of Giza around 2580-2560 BC as tombs for their pharaohs."
             }
@@ -32,22 +47,45 @@ quiz_data = {
         "science": [
             {
                 "question": "What is the chemical symbol for water?",
-                "options": ["a) O2", "b) CO2", "c) H2O", "d) NaCl"],
-                "correct": ["c"],
+                "options": [
+                    "a) O2",
+                    "b) CO2",
+                    "c) H2O",
+                    "d) NaCl"
+                ],
+                "correct": [
+                    "c"
+                ],
                 "hint": "It contains hydrogen and oxygen.",
                 "explanation": "Water is composed of 2 hydrogen atoms and 1 oxygen atom, giving it the formula H2O."
             },
             {
                 "question": "Which planet is known as the Red Planet?",
-                "options": ["a) Venus", "b) Mars", "c) Jupiter", "d) Saturn"],
-                "correct": ["b"],
+                "options": [
+                    "a) Venus",
+                    "b) Mars",
+                    "c) Jupiter",
+                    "d) Saturn"
+                ],
+                "correct": [
+                    "b"
+                ],
                 "hint": "It is the fourth planet from the Sun.",
                 "explanation": "Mars appears red due to iron oxide (rust) on its surface."
             },
             {
                 "question": "Which of the following are noble gases? (Select all that apply)",
-                "options": ["a) Helium", "b) Oxygen", "c) Neon", "d) Argon"],
-                "correct": ["a", "c", "d"],
+                "options": [
+                    "a) Helium",
+                    "b) Oxygen",
+                    "c) Neon",
+                    "d) Argon"
+                ],
+                "correct": [
+                    "a",
+                    "c",
+                    "d"
+                ],
                 "hint": "Noble gases are in the last column of the periodic table.",
                 "explanation": "Helium, Neon, and Argon are all noble gases. Oxygen is a reactive nonmetal."
             }
@@ -55,22 +93,45 @@ quiz_data = {
         "music": [
             {
                 "question": "Which artist released the album 'Thriller'?",
-                "options": ["a) Prince", "b) Michael Jackson", "c) Whitney Houston", "d) Stevie Wonder"],
-                "correct": ["b"],
+                "options": [
+                    "a) Prince",
+                    "b) Michael Jackson",
+                    "c) Whitney Houston",
+                    "d) Stevie Wonder"
+                ],
+                "correct": [
+                    "b"
+                ],
                 "hint": "He was known as the 'King of Pop'.",
                 "explanation": "Michael Jackson released 'Thriller' in 1982. It became the best-selling album of all time."
             },
             {
                 "question": "Which of these instruments are in a standard string quartet? (Select all that apply)",
-                "options": ["a) Violin", "b) Cello", "c) Flute", "d) Viola"],
-                "correct": ["a", "b", "d"],
+                "options": [
+                    "a) Violin",
+                    "b) Cello",
+                    "c) Flute",
+                    "d) Viola"
+                ],
+                "correct": [
+                    "a",
+                    "b",
+                    "d"
+                ],
                 "hint": "All the correct answers are string instruments.",
                 "explanation": "A string quartet consists of 2 violins, 1 viola, and 1 cello. A flute is a woodwind instrument."
             },
             {
                 "question": "What genre of music originated in New Orleans in the early 20th century?",
-                "options": ["a) Rock and Roll", "b) Country", "c) Jazz", "d) Hip Hop"],
-                "correct": ["c"],
+                "options": [
+                    "a) Rock and Roll",
+                    "b) Country",
+                    "c) Jazz",
+                    "d) Hip Hop"
+                ],
+                "correct": [
+                    "c"
+                ],
                 "hint": "Louis Armstrong is one of its most famous pioneers.",
                 "explanation": "Jazz originated in New Orleans in the late 19th/early 20th century, blending African-American musical traditions."
             }
@@ -78,31 +139,48 @@ quiz_data = {
         "nba": [
             {
                 "question": "Which player has won the most NBA championship rings?",
-                "options": ["a) Michael Jordan", "b) LeBron James", "c) Bill Russell", "d) Kobe Bryant"],
-                "correct": ["c"],
+                "options": [
+                    "a) Michael Jordan",
+                    "b) LeBron James",
+                    "c) Bill Russell",
+                    "d) Kobe Bryant"
+                ],
+                "correct": [
+                    "c"
+                ],
                 "hint": "He played for the Boston Celtics in the 1950s and 60s.",
                 "explanation": "Bill Russell won 11 NBA championships with the Boston Celtics between 1957 and 1969."
             },
             {
                 "question": "Which team has won the most NBA championships?",
-                "options": ["a) Los Angeles Lakers", "b) Chicago Bulls", "c) Boston Celtics", "d) Golden State Warriors"],
-                "correct": ["c"],
+                "options": [
+                    "a) Los Angeles Lakers",
+                    "b) Chicago Bulls",
+                    "c) Boston Celtics",
+                    "d) Golden State Warriors"
+                ],
+                "correct": [
+                    "c"
+                ],
                 "hint": "This team is based in Massachusetts.",
                 "explanation": "The Boston Celtics have won 18 NBA championships, the most in league history."
             },
             {
                 "question": "Which of these players were selected first overall in the NBA Draft? (Select all that apply)",
-                "options": ["a) LeBron James", "b) Kobe Bryant", "c) Tim Duncan", "d) Anthony Edwards"],
-                "correct": ["a", "c", "d"],
+                "options": [
+                    "a) LeBron James",
+                    "b) Kobe Bryant",
+                    "c) Tim Duncan",
+                    "d) Anthony Edwards"
+                ],
+                "correct": [
+                    "a",
+                    "c",
+                    "d"
+                ],
                 "hint": "One of the wrong answers was drafted 13th overall.",
                 "explanation": "LeBron James (2003), Tim Duncan (1997), and Anthony Edwards (2020) were all #1 picks. Kobe Bryant was picked 13th in 1996."
             }
         ]
     }
 }
-
-# Save the dictionary to a JSON file
-with open("quiz_questions.json", "w") as f:
-    json.dump(quiz_data, f, indent=4)
-
-print("Quiz questions saved to quiz_questions.json")
