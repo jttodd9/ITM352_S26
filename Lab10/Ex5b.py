@@ -26,5 +26,13 @@ large_homes_df = large_homes_df.dropna()
 #drop duplicates
 large_homes_df = large_homes_df.drop_duplicates()
 
+# Filter out 0 sales and print the results. Compute and display the average sales price 
+
+large_homes_df = large_homes_df[large_homes_df["sale_price"] > 0]
+
 #print out first 10 rows after cleansing
 print(large_homes_df.head(10))
+
+# Compute and display the average sales price
+average_sale_price = large_homes_df["sale_price"].mean()
+print(f"Average Sales Price: ${average_sale_price:,.2f}")
