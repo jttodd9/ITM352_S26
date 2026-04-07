@@ -1,0 +1,206 @@
+================================================================
+A2 Sales Data Dashboard - Testing Log
+Name: Justin Todd
+Date: 2026-04-06
+Tester: All tests run by piping inputs into R2.py
+================================================================
+
+KNOWN NOTE
+The dataset CSV uses 'order_number' instead of 'order_id' and has no
+'customer_id' column, so R1 prints a [WARNING] for those two missing
+required columns. The analytics still run correctly because none of
+them depend on those fields. (We can update REQUIRED_COLUMNS to match
+the real CSV if desired.)
+
+================================================================
+R1 - DATA LOADING
+================================================================
+
+Test 1.1: Load default dataset (Google Drive)
+Input:    Choose dataset option 1
+Expected: File loads (cached), prints rows + columns
+Actual:   File loaded successfully in 0.064 seconds.
+          Rows: 5130
+          Columns: ['order_number', 'employee_id', ... 'unit_price']
+Result:   PASS
+
+Test 1.2: Bad local CSV path
+Input:    Dataset option 2, enter "fake.csv"
+Expected: "File not found" message, program exits
+Actual:   "File not found: fake.csv" then exit
+Result:   PASS
+
+Test 1.3: Missing column warning
+Input:    Default load (CSV is missing order_id and customer_id)
+Expected: [WARNING] printed
+Actual:   [WARNING] Missing columns: ['order_id', 'customer_id']
+Result:   PASS
+
+================================================================
+R2 - MENU
+================================================================
+
+Test 2.1: Invalid menu choice (letter)
+Input:    "abc" at the menu prompt
+Expected: "Invalid choice. Enter a number between 1 and 10."
+Actual:   Same message printed, menu re-displayed
+Result:   PASS
+
+Test 2.2: Invalid menu choice (out of range)
+Input:    "99"
+Expected: Same invalid-choice message
+Actual:   Same message, menu re-displayed
+Result:   PASS
+
+Test 2.3: Exit option
+Input:    Choose option 10
+Expected: "Goodbye!" and program ends
+Actual:   "Goodbye!" printed, program exits cleanly
+Result:   PASS
+
+================================================================
+R3 - PREDEFINED ANALYTICS
+================================================================
+
+Test 3.1: Show first n rows (option 1)
+Input:    Option 1, "5"
+Expected: First 5 rows printed
+Actual:   First 5 rows printed (Alexandra Kundt orders 1-5)
+Result:   PASS
+
+Test 3.2: Total sales by region (option 2)
+Input:    Option 2, rows = all, export = n
+Expected: Pivot of unit_price summed by region x order_type
+Actual:   5 regions x 2 order types pivot printed:
+          Northwest   13285.78  5661.34
+          S Central East 51833.11 30115.33
+          ...
+Result:   PASS
+
+Test 3.3: Average sales by region (option 3)
+Input:    Option 3, rows = all
+Expected: Multi-level column pivot (state, order_type)
+Actual:   Pivot printed with state x order_type columns
+Result:   PASS
+
+Test 3.4: Sales by customer type (option 4)
+Input:    Option 4, rows = all
+Expected: Pivot indexed by state, customer_type, order_type
+Actual:   Three-level index pivot printed
+Result:   PASS
+
+Test 3.5: Total qty/price by region/product (option 5)
+Input:    Option 5, rows = all
+Expected: Pivot with quantity and unit_price columns
+Actual:   Pivot printed with both value columns
+Result:   PASS
+
+Test 3.6: Total qty/price by customer (option 6)
+Input:    Option 6, rows = all
+Expected: Pivot indexed by order_type and customer_type
+Actual:   Pivot printed correctly
+Result:   PASS
+
+Test 3.7: Max/min sales by category (option 7)
+Input:    Option 7, rows = all
+Expected: Max and min unit_price per category
+Actual:   max/min pivot printed
+Result:   PASS
+
+Test 3.8: Unique employees by region (option 8)
+Input:    Option 8, rows = all
+Expected: Count of unique employees per region
+Actual:   nunique pivot printed
+Result:   PASS
+
+================================================================
+R4 - CUSTOM PIVOT TABLE
+================================================================
+
+Test 4.1: Basic custom pivot
+Input:    Option 9, rows=sales_region, cols=(skip),
+          values=unit_price, agg=sum
+Expected: Pivot table prints
+Actual:   Region x sum(unit_price) pivot printed
+          (Northwest, S Central East, ... Southwest)
+Result:   PASS
+
+Test 4.2: Same field for rows and cols
+Input:    Option 9, rows=sales_region, cols=sales_region,
+          values=quantity, agg=sum
+Expected: No crash; duplicate column dropped
+Actual:   Pivot ran successfully (duplicate auto-removed by
+          R4.py "cols = [c for c in cols if c not in rows]")
+Result:   PASS
+
+================================================================
+EXTRA CREDIT - REQ 6 ROW FILTERING
+================================================================
+
+Test 6.1: Range
+Input:    Option 2, rows = "0-9"
+Expected: Pivot uses only first 10 rows
+Actual:   Pivot computed on rows 0-9 only, printed
+Result:   PASS
+
+Test 6.2: List
+Input:    Option 2, rows = "1,5,10,15"
+Expected: Pivot uses only those 4 rows
+Actual:   Pivot computed on 4 rows, printed
+Result:   PASS
+
+Test 6.3: Invalid range (out of bounds)
+Input:    rows = "0-99999" then "0-9"
+Expected: "Invalid input" message, then re-prompt accepts valid range
+Actual:   "Invalid input" printed, re-prompt accepted "0-9"
+Result:   PASS
+
+Test 6.4: Empty (all rows)
+Input:    rows = (Enter)
+Expected: Uses full dataset
+Actual:   Full 5130-row pivot printed
+Result:   PASS
+
+================================================================
+EXTRA CREDIT - REQ 1 EXCEL EXPORT
+================================================================
+
+Test 1.1: Export with .xlsx
+Input:    Option 2, rows=all, export=y, filename="test1.xlsx"
+Expected: File saved
+Actual:   "Saved to ...A2\test1.xlsx" — file confirmed on disk
+Result:   PASS
+
+Test 1.2: Export without extension
+Input:    filename = "test2"
+Expected: Saved as test2.xlsx
+Actual:   File saved as test2.xlsx (auto extension)
+Result:   PASS
+
+Test 1.3: Decline export
+Input:    export = n
+Expected: No file created, returns to menu
+Actual:   No file written, menu re-displayed
+Result:   PASS
+
+Test 1.4: Empty filename then valid
+Input:    export = y, filename = (Enter), then "test3.xlsx"
+Expected: "Filename cannot be empty", re-prompt accepts valid name
+Actual:   "Filename cannot be empty." printed,
+          then "Saved to ...A2\test3.xlsx"
+Result:   PASS
+
+================================================================
+SUMMARY
+================================================================
+Total tests: 22
+Passed:      22
+Failed:      0
+Notes:       All R1-R4 requirements work. Both extra credit
+             requirements (Req 6 row filtering, Req 1 Excel export)
+             work correctly including edge cases.
+
+             One small issue surfaced during testing: REQUIRED_COLUMNS
+             in R1.py lists 'order_id' and 'customer_id' but the actual
+             CSV uses 'order_number' and has no customer_id field. The
+             warning fires every load but no analytic actually breaks.
