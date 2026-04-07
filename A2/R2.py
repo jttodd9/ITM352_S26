@@ -1,9 +1,4 @@
-"""
-R2.py - Sales Data Dashboard Menu
-Main entry point for the dashboard. Loads the data via R1, then runs
-the interactive menu that calls into R3 (predefined analytics) and
-R4 (custom pivot table builder).
-"""
+# Main entry point for the sales data dashboard.
 
 from R1 import load_sales_data
 from R3 import (
@@ -17,12 +12,16 @@ from R3 import (
     unique_employees_by_region,
 )
 from R4 import custom_pivot_table
+from helpers import filter_rows, maybe_export
 
 def exit_dashboard(df):
     print("Goodbye!")
     raise SystemExit(0)
 
-# Tuple of (label, function) pairs, reorder or add items here to change menu
+# skip row filter and export for these
+SKIP_FILTER = {show_first_n_rows, exit_dashboard}
+
+# menu items: (label, function)
 MENU_ITEMS = (
     ("Show the first n rows of sales data",                show_first_n_rows),
     ("Total sales by region and order_type",               total_sales_by_region),
@@ -39,20 +38,30 @@ MENU_ITEMS = (
 def run_menu(df):
     while True:
         print("\n--- Sales Data Dashboard ---")
-        # Print each item with its number, generated from position
+        # print each menu item
         for i, (label, _) in enumerate(MENU_ITEMS, start=1):
             print(f"{i}. {label}")
 
         choice = input("\nEnter your choice: ").strip()
 
-        # Validate: must be a number within range
+        # check choice is a valid number
         if not choice.isdigit() or not (1 <= int(choice) <= len(MENU_ITEMS)):
             print(f"Invalid choice. Enter a number between 1 and {len(MENU_ITEMS)}.")
             continue
 
-        # Call the function paired with the chosen menu item
+        # run the picked function
         _, func = MENU_ITEMS[int(choice) - 1]
-        func(df)
+
+        if func in SKIP_FILTER:
+            func(df)
+            continue
+
+        # ask which rows to use, then run the analytic
+        working_df = filter_rows(df)
+        result = func(working_df)
+
+        # ask if the user wants to save it to excel
+        maybe_export(result)
 
 if __name__ == "__main__":
     df = load_sales_data()

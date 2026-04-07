@@ -1,7 +1,4 @@
-"""
-R3.py - Predefined Pivot Table Analytics
-Contains the 8 predefined analytic functions used by the dashboard menu.
-"""
+# the 8 predefined pivot table analytics
 
 import pandas as pd
 
@@ -34,6 +31,7 @@ def total_sales_by_region(df):
     )
     print("\nTotal Sales by Region and Order Type:")
     print(pivot.to_string())
+    return pivot
 
 def avg_sales_by_region(df):
     pivot = pd.pivot_table(
@@ -46,6 +44,7 @@ def avg_sales_by_region(df):
     )
     print("\nAverage Sales by Region (by State and Sale Type):")
     print(pivot.to_string())
+    return pivot
 
 def sales_by_customer_type(df):
     pivot = pd.pivot_table(
@@ -57,6 +56,7 @@ def sales_by_customer_type(df):
     )
     print("\nSales by Customer Type and Order Type, by State:")
     print(pivot.to_string())
+    return pivot
 
 def total_sales_qty_price_by_product(df):
     pivot = pd.pivot_table(
@@ -68,6 +68,7 @@ def total_sales_qty_price_by_product(df):
     )
     print("\nTotal Quantity and Sales Price by Region and Product:")
     print(pivot.to_string())
+    return pivot
 
 def total_sales_qty_price_by_customer(df):
     pivot = pd.pivot_table(
@@ -79,6 +80,7 @@ def total_sales_qty_price_by_customer(df):
     )
     print("\nTotal Quantity and Sales Price by Order Type and Customer Type:")
     print(pivot.to_string())
+    return pivot
 
 def max_min_sales_by_category(df):
     pivot = pd.pivot_table(
@@ -90,6 +92,7 @@ def max_min_sales_by_category(df):
     )
     print("\nMax and Min Sales Price by Category:")
     print(pivot.to_string())
+    return pivot
 
 def unique_employees_by_region(df):
     pivot = pd.pivot_table(
@@ -101,3 +104,4 @@ def unique_employees_by_region(df):
     )
     print("\nNumber of Unique Employees by Region:")
     print(pivot.to_string())
+    return pivot

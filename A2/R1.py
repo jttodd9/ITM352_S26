@@ -1,22 +1,22 @@
-"""
-R1.py - Sales Data Loader
-Handles downloading, loading, validating, and cleaning the sales data CSV.
-This module is imported by the main dashboard application.
-"""
+# R1.py - Handles downloading the file and loading it into a dataframe,
 
 import pandas as pd
 import time
 import os
-import sys
 import gdown
 
-FILENAME = "https://drive.google.com/uc?id=1Fv_vhoN4sTrUaozFPfzr0NCyHJLIeXEA"
-LOCAL_PATH = "sales_data.csv"
 REQUIRED_COLUMNS = ["order_id", "customer_id", "order_date", "sales_region", "customer_state", "product_category", "quantity", "unit_price", "order_type"]
 
-# download the file if it doesn't exist locally
+# list of datasets the user can pick from
+DATASETS = (
+    ("Default sales data (Google Drive)",
+     "https://drive.google.com/uc?id=1Fv_vhoN4sTrUaozFPfzr0NCyHJLIeXEA",
+     "sales_data.csv"),
+    ("Provide my own local CSV file", None, None),
+)
+
+# download the file from google drive
 def download_file(url, output):
-    """Download file from Google Drive using gdown."""
     try:
         gdown.download(url, output, quiet=False)
         print("File downloaded successfully.")
@@ -24,7 +24,7 @@ def download_file(url, output):
         print(f"Error downloading file: {e}")
         raise SystemExit(1)
     
-# Open the file time how long it takes and return it to dataframe
+# open the file and return it as a dataframe
 def load_data(filepath):
     print("Loading data, please wait...")
     start = time.time()
@@ -39,27 +39,51 @@ def load_data(filepath):
     elapsed = time.time()-start
     return df, elapsed
 
+# let the user pick which dataset to load
+def pick_dataset():
+    print("\nAvailable datasets:")
+    for i, (label, _, _) in enumerate(DATASETS, start=1):
+        print(f"  {i}. {label}")
+
+    while True:
+        choice = input("Choose a dataset (number): ").strip()
+        if choice.isdigit() and 1 <= int(choice) <= len(DATASETS):
+            label, url, local_path = DATASETS[int(choice) - 1]
+            break
+        print(f"Invalid input. Enter a number between 1 and {len(DATASETS)}.")
+
+    # if no url, ask the user for a local file path
+    if url is None:
+        path = input("Enter path to local CSV file: ").strip().strip('"')
+        if not os.path.exists(path):
+            print(f"File not found: {path}")
+            raise SystemExit(1)
+        return path
+
+    # otherwise download it if not already saved
+    if not os.path.exists(local_path):
+        download_file(url, local_path)
+    return local_path
+
+# main loader
 def load_sales_data():
-    """Main function to load pipeline"""
-    # only download if file doesn't exist locally
-    if not os.path.exists(LOCAL_PATH):
-        download_file(FILENAME, LOCAL_PATH)
+    filepath = pick_dataset()
 
-    # load the file and get elapsed time
-    df, elapsed = load_data(LOCAL_PATH)
+    # load the file
+    df, elapsed = load_data(filepath)
 
-    # print success stats
+    # print stats
     print(f"File loaded successfully in {elapsed:.3f} seconds.")
     print(f"Rows: {len(df)}")
     print(f"Columns: {list(df.columns)}")
 
-    # replace any missing values with 0
+    # replace missing values with 0
     missing_count = df.isnull().sum().sum()
     df = df.fillna(0)
     if missing_count > 0:
         print(f"Note: {missing_count} missing values replaced with 0.")
 
-    # check that required columns exist, warn if any are missing
+    # warn if any required columns are missing
     actual_columns = [col.lower() for col in df.columns]
     missing_cols = [col for col in REQUIRED_COLUMNS if col not in actual_columns]
     if missing_cols:
