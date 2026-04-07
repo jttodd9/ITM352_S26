@@ -1,65 +1,22 @@
-import pandas as pd
+"""
+R2.py - Sales Data Dashboard Menu
+Main entry point for the dashboard. Loads the data via R1, then runs
+the interactive menu that calls into R3 (predefined analytics) and
+R4 (custom pivot table builder).
+"""
+
 from R1 import load_sales_data
-
-def show_first_n_rows(df):
-    total = len(df)
-    print(f"\nEnter rows to display:")
-    print(f"  - Enter a number 1 to {total}")
-    print(f"  - To see all rows, enter 'all'")
-    print(f"  - To skip preview, press Enter")
-
-    choice = input("Your choice: ").strip().lower()
-
-    if choice == "":
-        print("Skipping preview.")
-    elif choice == "all":
-        print(df.to_string())
-    elif choice.isdigit() and 1 <= int(choice) <= total:
-        print(df.head(int(choice)).to_string())
-    else:
-        print(f"Invalid input. Enter a number between 1 and {total}, 'all', or press Enter.")
-
-def total_sales_by_region(df):
-    pivot = pd.pivot_table(
-        df,
-        values="unit_price",
-        index="sales_region",
-        columns="order_type",
-        aggfunc="sum",
-        fill_value=0
-    )
-    print("\nTotal Sales by Region and Order Type:")
-    print(pivot.to_string())
-
-def avg_sales_by_region(df):
-    pivot = pd.pivot_table(
-        df,
-        values="unit_price",
-        index="sales_region",
-        columns=["customer_state", "order_type"],
-        aggfunc="mean",
-        fill_value=0
-    )
-    print("\nAverage Sales by Region (by State and Sale Type):")
-    print(pivot.to_string())
-
-def sales_by_customer_type(df):
-    print("Coming soon: Sales by customer type and order type by state")
-
-def total_sales_qty_price_by_product(df):
-    print("Coming soon: Total sales quantity and price by region and product")
-
-def total_sales_qty_price_by_customer(df):
-    print("Coming soon: Total sales quantity and price by customer type")
-
-def max_min_sales_by_category(df):
-    print("Coming soon: Max and min sales price by category")
-
-def unique_employees_by_region(df):
-    print("Coming soon: Number of unique employees by region")
-
-def custom_pivot_table(df):
-    print("Coming soon: Custom pivot table")
+from R3 import (
+    show_first_n_rows,
+    total_sales_by_region,
+    avg_sales_by_region,
+    sales_by_customer_type,
+    total_sales_qty_price_by_product,
+    total_sales_qty_price_by_customer,
+    max_min_sales_by_category,
+    unique_employees_by_region,
+)
+from R4 import custom_pivot_table
 
 def exit_dashboard(df):
     print("Goodbye!")
