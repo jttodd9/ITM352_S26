@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Game</title>
+</head>
+<body>
+    <h1>Justin's Quiz Game</h1>
+    <p>Test your knowledge across multiple categories.</p>
+    <form method="POST" action="{{ url_for('start') }}">
+        <label>Enter your name:
+            <input type="text" name="username" placeholder="guest">
+        </label>
+        <button type="submit">Start</button>
+    </form>
+</body>
+</html>

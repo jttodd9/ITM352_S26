@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question {{ number }}</title>
+</head>
+<body>
+    <p>Question {{ number }} of {{ total }} | Score: {{ score }}</p>
+    <h2>{{ question.question }}</h2>
+    <form method="POST" action="{{ url_for('question') }}">
+        {% for opt in question.options %}
+            <label>
+                <input type="radio" name="answer" value="{{ opt[0]|lower }}" required>
+                {{ opt }}
+            </label><br>
+        {% endfor %}
+        <br>
+        <button type="submit">Submit Answer</button>
+    </form>
+    {% if question.hint %}
+        <details>
+            <summary>Hint</summary>
+            <p>{{ question.hint }}</p>
+        </details>
+    {% endif %}
+</body>
+</html>
