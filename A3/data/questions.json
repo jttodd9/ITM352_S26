@@ -1,0 +1,236 @@
+{
+    "categories": {
+        "history": [
+            {
+                "question": "In what year did World War II end?",
+                "options": ["a) 1943", "b) 1944", "c) 1945", "d) 1946"],
+                "correct": ["c"],
+                "hint": "It was in the mid-1940s.",
+                "explanation": "WWII ended in 1945 when Japan surrendered after the atomic bombings of Hiroshima and Nagasaki.",
+                "difficulty": "medium"
+            },
+            {
+                "question": "Who was the first President of the United States?",
+                "options": ["a) Thomas Jefferson", "b) George Washington", "c) John Adams", "d) Benjamin Franklin"],
+                "correct": ["b"],
+                "hint": "He is known as the 'Father of His Country'.",
+                "explanation": "George Washington served as the first U.S. President from 1789 to 1797.",
+                "difficulty": "medium"
+            },
+            {
+                "question": "Which ancient civilization built the pyramids of Giza?",
+                "options": ["a) Romans", "b) Greeks", "c) Egyptians", "d) Mesopotamians"],
+                "correct": ["c"],
+                "hint": "This civilization thrived along the Nile River.",
+                "explanation": "The ancient Egyptians built the pyramids of Giza around 2580-2560 BC as tombs for their pharaohs.",
+                "difficulty": "medium"
+            },
+            {
+                "question": "What country gifted the Statue of Liberty to the United States?",
+                "options": ["a) United Kingdom", "b) France", "c) Spain", "d) Italy"],
+                "correct": ["b"],
+                "hint": "The statue was designed by a French sculptor.",
+                "explanation": "France gifted the Statue of Liberty to the U.S. in 1886 as a symbol of friendship.",
+                "difficulty": "easy"
+            },
+            {
+                "question": "On what continent is Egypt located?",
+                "options": ["a) Asia", "b) Europe", "c) Africa", "d) South America"],
+                "correct": ["c"],
+                "hint": "The Nile River runs through it.",
+                "explanation": "Egypt is a country in North Africa.",
+                "difficulty": "easy"
+            },
+            {
+                "question": "In what year did the Berlin Wall fall?",
+                "options": ["a) 1987", "b) 1989", "c) 1991", "d) 1993"],
+                "correct": ["b"],
+                "hint": "It happened at the end of the 1980s.",
+                "explanation": "The Berlin Wall fell on November 9, 1989, marking the end of the Cold War era in Germany.",
+                "difficulty": "hard"
+            },
+            {
+                "question": "Who was the Roman general that crossed the Rubicon in 49 BC?",
+                "options": ["a) Augustus", "b) Mark Antony", "c) Julius Caesar", "d) Pompey"],
+                "correct": ["c"],
+                "hint": "His name became a title used by future emperors.",
+                "explanation": "Julius Caesar crossed the Rubicon in 49 BC, triggering a civil war in Rome.",
+                "difficulty": "hard"
+            }
+        ],
+        "science": [
+            {
+                "question": "What is the chemical symbol for water?",
+                "options": ["a) O2", "b) CO2", "c) H2O", "d) NaCl"],
+                "correct": ["c"],
+                "hint": "It contains hydrogen and oxygen.",
+                "explanation": "Water is composed of 2 hydrogen atoms and 1 oxygen atom, giving it the formula H2O.",
+                "difficulty": "medium"
+            },
+            {
+                "question": "Which planet is known as the Red Planet?",
+                "options": ["a) Venus", "b) Mars", "c) Jupiter", "d) Saturn"],
+                "correct": ["b"],
+                "hint": "It is the fourth planet from the Sun.",
+                "explanation": "Mars appears red due to iron oxide (rust) on its surface.",
+                "difficulty": "medium"
+            },
+            {
+                "question": "Which of the following are noble gases? (Select all that apply)",
+                "options": ["a) Helium", "b) Oxygen", "c) Neon", "d) Argon"],
+                "correct": ["a", "c", "d"],
+                "hint": "Noble gases are in the last column of the periodic table.",
+                "explanation": "Helium, Neon, and Argon are all noble gases. Oxygen is a reactive nonmetal.",
+                "difficulty": "medium"
+            },
+            {
+                "question": "How many legs does a spider have?",
+                "options": ["a) 6", "b) 8", "c) 10", "d) 4"],
+                "correct": ["b"],
+                "hint": "It has two more than an insect.",
+                "explanation": "Spiders are arachnids and have 8 legs.",
+                "difficulty": "easy"
+            },
+            {
+                "question": "What gas do plants absorb from the atmosphere?",
+                "options": ["a) Oxygen", "b) Nitrogen", "c) Carbon dioxide", "d) Hydrogen"],
+                "correct": ["c"],
+                "hint": "It's the gas we breathe out.",
+                "explanation": "Plants absorb carbon dioxide from the air and use it during photosynthesis.",
+                "difficulty": "easy"
+            },
+            {
+                "question": "What is the powerhouse of the cell?",
+                "options": ["a) Nucleus", "b) Ribosome", "c) Mitochondria", "d) Golgi apparatus"],
+                "correct": ["c"],
+                "hint": "It generates ATP.",
+                "explanation": "Mitochondria produce most of the cell's ATP through cellular respiration.",
+                "difficulty": "hard"
+            },
+            {
+                "question": "What is the speed of light in a vacuum (approximately)?",
+                "options": ["a) 300,000 km/s", "b) 150,000 km/s", "c) 1,000,000 km/s", "d) 30,000 km/s"],
+                "correct": ["a"],
+                "hint": "It takes about 8 minutes for light to reach Earth from the Sun.",
+                "explanation": "Light travels at approximately 299,792 km/s in a vacuum, usually rounded to 300,000 km/s.",
+                "difficulty": "hard"
+            }
+        ],
+        "music": [
+            {
+                "question": "Which artist released the album 'Thriller'?",
+                "options": ["a) Prince", "b) Michael Jackson", "c) Whitney Houston", "d) Stevie Wonder"],
+                "correct": ["b"],
+                "hint": "He was known as the 'King of Pop'.",
+                "explanation": "Michael Jackson released 'Thriller' in 1982. It became the best-selling album of all time.",
+                "difficulty": "medium"
+            },
+            {
+                "question": "Which of these instruments are in a standard string quartet? (Select all that apply)",
+                "options": ["a) Violin", "b) Cello", "c) Flute", "d) Viola"],
+                "correct": ["a", "b", "d"],
+                "hint": "All the correct answers are string instruments.",
+                "explanation": "A string quartet consists of 2 violins, 1 viola, and 1 cello. A flute is a woodwind instrument.",
+                "difficulty": "medium"
+            },
+            {
+                "question": "What genre of music originated in New Orleans in the early 20th century?",
+                "options": ["a) Rock and Roll", "b) Country", "c) Jazz", "d) Hip Hop"],
+                "correct": ["c"],
+                "hint": "Louis Armstrong is one of its most famous pioneers.",
+                "explanation": "Jazz originated in New Orleans in the late 19th/early 20th century, blending African-American musical traditions.",
+                "difficulty": "medium"
+            },
+            {
+                "question": "How many strings does a standard guitar have?",
+                "options": ["a) 4", "b) 5", "c) 6", "d) 8"],
+                "correct": ["c"],
+                "hint": "Standard tuning is E A D G B E.",
+                "explanation": "A standard acoustic or electric guitar has 6 strings.",
+                "difficulty": "easy"
+            },
+            {
+                "question": "Which Beatle was known as 'the quiet one'?",
+                "options": ["a) John Lennon", "b) Paul McCartney", "c) George Harrison", "d) Ringo Starr"],
+                "correct": ["c"],
+                "hint": "He was the lead guitarist.",
+                "explanation": "George Harrison was often called 'the quiet Beatle' because of his reserved personality.",
+                "difficulty": "easy"
+            },
+            {
+                "question": "Who composed 'The Four Seasons' violin concertos?",
+                "options": ["a) Bach", "b) Mozart", "c) Vivaldi", "d) Beethoven"],
+                "correct": ["c"],
+                "hint": "He was an Italian Baroque composer.",
+                "explanation": "Antonio Vivaldi composed 'The Four Seasons' around 1720.",
+                "difficulty": "hard"
+            },
+            {
+                "question": "What key is most commonly used for a blues 12-bar progression using only I, IV, and V chords starting on E?",
+                "options": ["a) Key of E", "b) Key of A", "c) Key of G", "d) Key of D"],
+                "correct": ["a"],
+                "hint": "The tonic chord names the key.",
+                "explanation": "If the I chord is E, the progression is in the key of E.",
+                "difficulty": "hard"
+            }
+        ],
+        "nba": [
+            {
+                "question": "Which player has won the most NBA championship rings?",
+                "options": ["a) Michael Jordan", "b) LeBron James", "c) Bill Russell", "d) Kobe Bryant"],
+                "correct": ["c"],
+                "hint": "He played for the Boston Celtics in the 1950s and 60s.",
+                "explanation": "Bill Russell won 11 NBA championships with the Boston Celtics between 1957 and 1969.",
+                "difficulty": "medium"
+            },
+            {
+                "question": "Which team has won the most NBA championships?",
+                "options": ["a) Los Angeles Lakers", "b) Chicago Bulls", "c) Boston Celtics", "d) Golden State Warriors"],
+                "correct": ["c"],
+                "hint": "This team is based in Massachusetts.",
+                "explanation": "The Boston Celtics have won 18 NBA championships, the most in league history.",
+                "difficulty": "medium"
+            },
+            {
+                "question": "Which of these players were selected first overall in the NBA Draft? (Select all that apply)",
+                "options": ["a) LeBron James", "b) Kobe Bryant", "c) Tim Duncan", "d) Anthony Edwards"],
+                "correct": ["a", "c", "d"],
+                "hint": "One of the wrong answers was drafted 13th overall.",
+                "explanation": "LeBron James (2003), Tim Duncan (1997), and Anthony Edwards (2020) were all #1 picks. Kobe Bryant was picked 13th in 1996.",
+                "difficulty": "medium"
+            },
+            {
+                "question": "How many players from one team are on the court at a time in an NBA game?",
+                "options": ["a) 4", "b) 5", "c) 6", "d) 7"],
+                "correct": ["b"],
+                "hint": "It's one less than a baseball infield.",
+                "explanation": "Each NBA team has 5 players on the court at a time.",
+                "difficulty": "easy"
+            },
+            {
+                "question": "What is the nickname of the Los Angeles basketball team that plays in the Western Conference and wears purple and gold?",
+                "options": ["a) Clippers", "b) Lakers", "c) Kings", "d) Warriors"],
+                "correct": ["b"],
+                "hint": "They share an arena with the Clippers.",
+                "explanation": "The Los Angeles Lakers wear purple and gold and have won 17 NBA championships.",
+                "difficulty": "easy"
+            },
+            {
+                "question": "Who holds the NBA record for most points scored in a single game?",
+                "options": ["a) Kobe Bryant", "b) Wilt Chamberlain", "c) Michael Jordan", "d) LeBron James"],
+                "correct": ["b"],
+                "hint": "He scored 100 in a single game.",
+                "explanation": "Wilt Chamberlain scored 100 points in a game against the New York Knicks on March 2, 1962.",
+                "difficulty": "hard"
+            },
+            {
+                "question": "Which team drafted Kobe Bryant before trading him to the Lakers?",
+                "options": ["a) Philadelphia 76ers", "b) Charlotte Hornets", "c) New Jersey Nets", "d) Houston Rockets"],
+                "correct": ["b"],
+                "hint": "The team was based in North Carolina at the time.",
+                "explanation": "The Charlotte Hornets drafted Kobe Bryant with the 13th pick in 1996 and traded him to the Lakers for Vlade Divac.",
+                "difficulty": "hard"
+            }
+        ]
+    }
+}

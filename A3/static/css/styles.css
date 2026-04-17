@@ -1,0 +1,462 @@
+/* styles.css - Arcade aesthetic for the quiz app. */
+
+:root {
+    --bg-black: #0a0a0f;
+    --neon-green: #39ff14;
+    --neon-magenta: #ff2bd6;
+    --neon-cyan: #00e5ff;
+    --warn-red: #ff3355;
+    --dim-green: #1a4d2e;
+    --text-main: #e8f5e8;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg-black);
+    color: var(--text-main);
+    font-family: "Courier New", monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* CRT scanline overlay */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0) 0px,
+        rgba(0, 0, 0, 0) 2px,
+        rgba(0, 0, 0, 0.15) 3px,
+        rgba(0, 0, 0, 0.15) 4px
+    );
+    z-index: 100;
+}
+
+.arcade-frame {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    border: 2px solid var(--neon-green);
+    box-shadow:
+        0 0 15px var(--neon-green),
+        inset 0 0 15px rgba(57, 255, 20, 0.1);
+    min-height: 600px;
+    position: relative;
+}
+
+/* Screens (only one shown at a time) */
+.screen {
+    display: none;
+    animation: fadeIn 250ms ease-in;
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Titles */
+.title {
+    font-size: 3rem;
+    color: var(--neon-green);
+    text-align: center;
+    text-shadow:
+        0 0 10px var(--neon-green),
+        0 0 20px var(--neon-green);
+    letter-spacing: 0.3rem;
+    margin: 40px 0 20px;
+    font-family: "Courier New", monospace;
+}
+
+.flicker {
+    animation: flicker 3s infinite;
+}
+
+@keyframes flicker {
+    0%, 92%, 100% { opacity: 1; }
+    93%, 95%      { opacity: 0.5; }
+    94%, 96%      { opacity: 1; }
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--neon-cyan);
+    letter-spacing: 0.2rem;
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 2rem;
+    color: var(--neon-magenta);
+    text-align: center;
+    text-shadow: 0 0 10px var(--neon-magenta);
+    letter-spacing: 0.2rem;
+    margin-bottom: 30px;
+}
+
+/* Inputs */
+input[type="text"] {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 20px;
+    background: var(--bg-black);
+    color: var(--neon-green);
+    border: 2px solid var(--neon-green);
+    font-family: "Courier New", monospace;
+    font-size: 1.2rem;
+    text-align: center;
+    letter-spacing: 0.1rem;
+    outline: none;
+    text-transform: uppercase;
+}
+
+input[type="text"]:focus {
+    box-shadow: 0 0 10px var(--neon-green);
+}
+
+/* Buttons */
+.neon-btn {
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 12px 24px;
+    background: var(--bg-black);
+    color: var(--neon-green);
+    border: 2px solid var(--neon-green);
+    font-family: "Courier New", monospace;
+    font-size: 1rem;
+    letter-spacing: 0.15rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 150ms;
+}
+
+.neon-btn:hover:not(:disabled) {
+    color: var(--bg-black);
+    background: var(--neon-green);
+    box-shadow: 0 0 15px var(--neon-green);
+}
+
+.neon-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.neon-btn.big {
+    font-size: 1.3rem;
+    padding: 16px 32px;
+    display: block;
+    margin: 30px auto;
+}
+
+.neon-btn.small {
+    font-size: 0.8rem;
+    padding: 8px 16px;
+}
+
+#new-user, #returning-user {
+    text-align: center;
+}
+
+.welcome-back {
+    text-align: center;
+    color: var(--neon-cyan);
+    font-size: 1.3rem;
+    margin: 20px 0;
+    letter-spacing: 0.1rem;
+}
+
+/* Chip-style selectors on setup screen */
+.setup-group {
+    margin: 25px 0;
+}
+
+.setup-group label {
+    display: block;
+    color: var(--neon-cyan);
+    margin-bottom: 10px;
+    letter-spacing: 0.2rem;
+}
+
+.option-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chip {
+    padding: 10px 18px;
+    background: var(--bg-black);
+    color: var(--text-main);
+    border: 2px solid var(--dim-green);
+    font-family: "Courier New", monospace;
+    letter-spacing: 0.1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 150ms;
+}
+
+.chip:hover {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+}
+
+.chip.selected {
+    border-color: var(--neon-green);
+    color: var(--neon-green);
+    box-shadow: 0 0 10px var(--neon-green);
+}
+
+/* Quiz screen */
+.quiz-hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--dim-green);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.quiz-hud span {
+    color: var(--neon-green);
+    letter-spacing: 0.15rem;
+}
+
+.timer {
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+
+#timer-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1rem;
+    color: var(--neon-magenta);
+}
+
+.timer-ring-bg {
+    fill: transparent;
+    stroke: var(--dim-green);
+    stroke-width: 3;
+}
+
+.timer-ring {
+    fill: transparent;
+    stroke: var(--neon-magenta);
+    stroke-width: 3;
+    stroke-dasharray: 106.8;
+    stroke-dashoffset: 0;
+    transform: rotate(-90deg);
+    transform-origin: center;
+    transition: stroke-dashoffset 1s linear, stroke 200ms;
+}
+
+.timer.urgent .timer-ring,
+.timer.urgent #timer-text {
+    stroke: var(--warn-red);
+    color: var(--warn-red);
+    animation: pulse 500ms infinite alternate;
+}
+
+@keyframes pulse {
+    from { filter: drop-shadow(0 0 2px var(--warn-red)); }
+    to   { filter: drop-shadow(0 0 10px var(--warn-red)); }
+}
+
+.quiz-question {
+    font-size: 1.5rem;
+    color: var(--text-main);
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.quiz-hint {
+    color: var(--neon-cyan);
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.quiz-options button {
+    padding: 14px 20px;
+    background: var(--bg-black);
+    color: var(--text-main);
+    border: 2px solid var(--dim-green);
+    font-family: "Courier New", monospace;
+    font-size: 1rem;
+    text-align: left;
+    cursor: pointer;
+    letter-spacing: 0.05rem;
+    transition: all 150ms;
+}
+
+.quiz-options button:hover:not(:disabled) {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+}
+
+.quiz-options button.selected {
+    border-color: var(--neon-magenta);
+    color: var(--neon-magenta);
+}
+
+.quiz-options button.correct {
+    background: var(--dim-green);
+    border-color: var(--neon-green);
+    color: var(--neon-green);
+    box-shadow: 0 0 10px var(--neon-green);
+}
+
+.quiz-options button.incorrect {
+    border-color: var(--warn-red);
+    color: var(--warn-red);
+    animation: shake 300ms;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+}
+
+.feedback {
+    margin-top: 20px;
+    padding: 12px;
+    border: 1px dashed var(--neon-cyan);
+    color: var(--neon-cyan);
+    font-style: italic;
+}
+
+/* Results screen */
+.score-line {
+    text-align: center;
+    font-size: 1.4rem;
+    margin: 15px 0;
+    color: var(--neon-green);
+    letter-spacing: 0.15rem;
+}
+
+.pb {
+    text-align: center;
+    color: var(--neon-magenta);
+    font-size: 1.5rem;
+    letter-spacing: 0.2rem;
+    margin: 20px 0;
+    text-shadow: 0 0 10px var(--neon-magenta);
+    animation: flicker 1s infinite;
+}
+
+.button-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+/* Leaderboard */
+.score-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.score-table th {
+    color: var(--neon-magenta);
+    letter-spacing: 0.1rem;
+    padding: 10px;
+    border-bottom: 2px solid var(--dim-green);
+    text-align: left;
+}
+
+.score-table td {
+    padding: 10px;
+    border-bottom: 1px solid var(--dim-green);
+    color: var(--text-main);
+}
+
+.score-table tr:nth-child(1) td {
+    color: gold;
+    text-shadow: 0 0 5px gold;
+}
+
+.score-table tr:nth-child(2) td {
+    color: silver;
+    text-shadow: 0 0 5px silver;
+}
+
+.score-table tr:nth-child(3) td {
+    color: #cd7f32;
+    text-shadow: 0 0 5px #cd7f32;
+}
+
+/* History list */
+#history-list {
+    margin: 20px 0;
+}
+
+.history-entry {
+    padding: 10px;
+    border-bottom: 1px solid var(--dim-green);
+    color: var(--text-main);
+    font-family: "Courier New", monospace;
+}
+
+.history-entry .date {
+    color: var(--neon-cyan);
+    margin-right: 10px;
+}
+
+/* Error + banner */
+.error-msg {
+    color: var(--warn-red);
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 0.1rem;
+}
+
+.error-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--warn-red);
+    color: var(--bg-black);
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    letter-spacing: 0.2rem;
+    z-index: 200;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.back-btn {
+    display: block;
+    margin: 30px auto 0;
+}

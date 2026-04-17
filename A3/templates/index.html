@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QUIZ ARCADE</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="scanlines"></div>
+
+    <div class="arcade-frame">
+
+        <!-- WELCOME SCREEN -->
+        <section id="screen-welcome" class="screen active">
+            <h1 class="title flicker">QUIZ ARCADE</h1>
+            <p class="subtitle">INSERT NAME TO BEGIN</p>
+
+            <div id="returning-user" class="hidden">
+                <p class="welcome-back">WELCOME BACK, <span id="returning-name"></span></p>
+                <button id="btn-continue" class="neon-btn">CONTINUE &gt;</button>
+                <button id="btn-change-name" class="neon-btn small">CHANGE NAME</button>
+            </div>
+
+            <div id="new-user">
+                <input type="text" id="input-name" maxlength="20" placeholder="ENTER YOUR NAME" autocomplete="off">
+                <button id="btn-start" class="neon-btn">START &gt;</button>
+                <p id="name-error" class="error-msg hidden"></p>
+            </div>
+        </section>
+
+        <!-- SETUP SCREEN -->
+        <section id="screen-setup" class="screen">
+            <h2 class="section-title">SELECT YOUR CHALLENGE</h2>
+
+            <div class="setup-group">
+                <label>CATEGORY</label>
+                <div id="category-options" class="option-row"></div>
+            </div>
+
+            <div class="setup-group">
+                <label>DIFFICULTY</label>
+                <div class="option-row">
+                    <button class="chip" data-difficulty="easy">EASY &middot; 1PT</button>
+                    <button class="chip" data-difficulty="medium">MEDIUM &middot; 2PT</button>
+                    <button class="chip" data-difficulty="hard">HARD &middot; 3PT</button>
+                </div>
+            </div>
+
+            <div class="setup-group">
+                <label>MODE</label>
+                <div class="option-row">
+                    <button class="chip" data-timed="true">TIMED &middot; 20S</button>
+                    <button class="chip" data-timed="false">UNTIMED</button>
+                </div>
+            </div>
+
+            <button id="btn-begin" class="neon-btn big" disabled>BEGIN QUIZ</button>
+            <p id="setup-error" class="error-msg hidden"></p>
+        </section>
+
+        <!-- QUIZ SCREEN -->
+        <section id="screen-quiz" class="screen">
+            <div class="quiz-hud">
+                <span id="hud-score">SCORE: 000</span>
+                <span id="hud-counter">Q 0/0</span>
+                <div id="hud-timer" class="timer hidden">
+                    <svg viewBox="0 0 40 40" width="40" height="40">
+                        <circle cx="20" cy="20" r="17" class="timer-ring-bg"></circle>
+                        <circle cx="20" cy="20" r="17" class="timer-ring"></circle>
+                    </svg>
+                    <span id="timer-text">20</span>
+                </div>
+            </div>
+
+            <h2 id="quiz-question" class="quiz-question"></h2>
+            <p id="quiz-hint" class="quiz-hint"></p>
+            <div id="quiz-options" class="quiz-options"></div>
+            <p id="quiz-feedback" class="feedback hidden"></p>
+        </section>
+
+        <!-- RESULTS SCREEN -->
+        <section id="screen-results" class="screen">
+            <h2 class="section-title">GAME OVER</h2>
+            <p class="score-line">SCORE: <span id="final-score">0</span> / <span id="final-total">0</span></p>
+            <p class="score-line">ACCURACY: <span id="final-percent">0</span>%</p>
+            <p id="final-rank" class="score-line"></p>
+            <p id="final-pb" class="pb hidden">NEW PERSONAL BEST!</p>
+
+            <div class="button-row">
+                <button id="btn-play-again" class="neon-btn">PLAY AGAIN</button>
+                <button id="btn-show-leaderboard" class="neon-btn">LEADERBOARD</button>
+                <button id="btn-show-history" class="neon-btn">HISTORY</button>
+            </div>
+        </section>
+
+        <!-- LEADERBOARD SCREEN -->
+        <section id="screen-leaderboard" class="screen">
+            <h2 class="section-title">HIGH SCORES</h2>
+            <table class="score-table">
+                <thead>
+                    <tr><th>#</th><th>NAME</th><th>SCORE</th><th>CATEGORY</th><th>DIFF</th></tr>
+                </thead>
+                <tbody id="leaderboard-body"></tbody>
+            </table>
+            <button class="neon-btn back-btn" data-back="results">BACK</button>
+        </section>
+
+        <!-- HISTORY SCREEN -->
+        <section id="screen-history" class="screen">
+            <h2 class="section-title">YOUR HISTORY</h2>
+            <div id="history-list"></div>
+            <button class="neon-btn back-btn" data-back="results">BACK</button>
+        </section>
+
+        <!-- CONNECTION ERROR BANNER -->
+        <div id="error-banner" class="error-banner hidden">CONNECTION ERROR - TRY AGAIN</div>
+
+    </div>
+
+    <script>
+        // Pass the server-side session username into the JS app.
+        window.INITIAL_USERNAME = {{ username | tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+</body>
+</html>
