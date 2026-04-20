@@ -1,0 +1,24 @@
+{
+  "Justin Todd": [
+    {
+      "username": "Justin Todd",
+      "score": 3,
+      "total_possible": 6,
+      "percentage": 50,
+      "category": "history",
+      "difficulty": "hard",
+      "timed": true,
+      "timestamp": "2026-04-20T08:51:25"
+    },
+    {
+      "username": "Justin Todd",
+      "score": 2,
+      "total_possible": 2,
+      "percentage": 100,
+      "category": "science",
+      "difficulty": "easy",
+      "timed": true,
+      "timestamp": "2026-04-20T08:50:53"
+    }
+  ]
+}
